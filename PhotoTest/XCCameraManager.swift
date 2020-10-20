@@ -12,7 +12,11 @@ import UIKit
 final class XCCameraManager: BaseCameraManager {
     
     // MARK: - Adapter Delegates
-    weak var photoCaptureDelegate: XCPhotoCaptureDelegate?
+    weak var photoCaptureDelegate: XCPhotoCaptureDelegate? {
+        didSet {
+            xcPhotoCaptureProcessor.delegate = photoCaptureDelegate
+        }
+    }
     
     weak var recordingCaptureDelegate: XCRecordingCaptureDelegate? {
         didSet {
@@ -25,10 +29,12 @@ final class XCCameraManager: BaseCameraManager {
     
     private var cropRect: CGRect {
 //        previewView.convert(previewView.bounds, to: nil)
-        previewView.videoPreviewLayer.metadataOutputRectConverted(fromLayerRect: previewView.bounds)
+        let metadataOutputRect = previewView.videoPreviewLayer.metadataOutputRectConverted(fromLayerRect: previewView.bounds)
+        let r2 = CGRect(x: metadataOutputRect.origin.x * previewView.bounds.size.width, y: metadataOutputRect.origin.y * previewView.bounds.size.height, width: metadataOutputRect.size.width * previewView.bounds.size.width, height: metadataOutputRect.size.height * previewView.bounds.size.height)
+        return r2
     }
     
-    // MARK: - Proxy Delegates Factory
+    // MARK: - Proxy Delegates
     private var xcPhotoCaptureProcessor: XCPhotoCaptureProcessor {
         photoCaptureProcessor as! XCPhotoCaptureProcessor
     }
@@ -37,21 +43,29 @@ final class XCCameraManager: BaseCameraManager {
         recordingCaptureProcessor as! XCRecordingCaptureProcessor
     }
     
+    // MARK: - init
     override init(configurator: (BaseCameraManager) -> Void) {
         super.init(configurator: { camera in
-            configurator(camera)
-            
             camera.photoCaptureProcessor = XCPhotoCaptureProcessor()
             camera.recordingCaptureProcessor = XCRecordingCaptureProcessor()
             
             camera.portraitEffectsMatteDeliveryModeEnable = false
             camera.depthDataDeliveryModeEnable = false
             camera.livePhotoModeEnable = false
+        
+            configurator(camera)
         })
         
         sessionQueue.async {
             self.configureAudioSession()
         }
+    }
+    
+    // MARK: - Overrides
+    override func capturePhoto() {
+        xcPhotoCaptureProcessor.cropRect = cropRect
+        
+        super.capturePhoto()
     }
     
     override func stopRecording() {

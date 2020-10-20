@@ -37,7 +37,7 @@ extension XCPhotoCaptureProcessor: AVCapturePhotoCaptureDelegate {
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         var image: UIImage?
         
-        if let pixelBuffer = photo.pixelBuffer {
+        if let pixelBuffer = photo.previewPixelBuffer {
             image = cropImage(pixelBuffer)
         }
         

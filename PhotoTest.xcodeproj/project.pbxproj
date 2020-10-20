@@ -22,7 +22,6 @@
 		4EA76A272536FB1300E174D1 /* GalleryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA76A262536FB1300E174D1 /* GalleryCollectionViewCell.swift */; };
 		4EAD48A4253D81C40001242C /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAD48A3253D81C40001242C /* CameraView.swift */; };
 		4EAD48AF253D8BD50001242C /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAD48AE253D8BD50001242C /* CameraViewController.swift */; };
-		4EAD48B7253DA2130001242C /* VideoProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAD48B6253DA2130001242C /* VideoProgressView.swift */; };
 		4EAD48BA253DA8390001242C /* VideoTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAD48B9253DA8390001242C /* VideoTimer.swift */; };
 		4EB143B72535838300F2FB80 /* XCRecordingCaptureProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB143B62535838300F2FB80 /* XCRecordingCaptureProcessor.swift */; };
 		4EB143BA253599E900F2FB80 /* XCPhotoCaptureDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB143B9253599E900F2FB80 /* XCPhotoCaptureDelegate.swift */; };
@@ -52,7 +51,6 @@
 		4EA76A262536FB1300E174D1 /* GalleryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryCollectionViewCell.swift; sourceTree = "<group>"; };
 		4EAD48A3253D81C40001242C /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		4EAD48AE253D8BD50001242C /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
-		4EAD48B6253DA2130001242C /* VideoProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoProgressView.swift; sourceTree = "<group>"; };
 		4EAD48B9253DA8390001242C /* VideoTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoTimer.swift; sourceTree = "<group>"; };
 		4EB143B62535838300F2FB80 /* XCRecordingCaptureProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCRecordingCaptureProcessor.swift; sourceTree = "<group>"; };
 		4EB143B9253599E900F2FB80 /* XCPhotoCaptureDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCPhotoCaptureDelegate.swift; sourceTree = "<group>"; };
@@ -127,7 +125,6 @@
 				4EAD48AE253D8BD50001242C /* CameraViewController.swift */,
 				4EAD48B9253DA8390001242C /* VideoTimer.swift */,
 				4EAD48A3253D81C40001242C /* CameraView.swift */,
-				4EAD48B6253DA2130001242C /* VideoProgressView.swift */,
 				4E06AFFF25308B45000EA83A /* BaseCameraManager.swift */,
 				4ED534CE253EC93800847ADD /* XCCameraManager.swift */,
 				4EB143B62535838300F2FB80 /* XCRecordingCaptureProcessor.swift */,
@@ -259,7 +256,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4EAD48B7253DA2130001242C /* VideoProgressView.swift in Sources */,
 				4EA76A212536F60900E174D1 /* ShortTapGestureRecognizer.swift in Sources */,
 				4EA76A272536FB1300E174D1 /* GalleryCollectionViewCell.swift in Sources */,
 				4EB44DA7253441C000ABE55C /* UIViewController+extension.swift in Sources */,

@@ -73,13 +73,14 @@ class CameraViewController: UIViewController {
     
     private func configureCamera() {
         camera = XCCameraManager { [unowned self] (camera) in
+            let camera = camera as! XCCameraManager
             camera.photoPreset = .photo
             camera.videoPreset = .high
             camera.flashMode = .off
             
             camera.previewView = self.previewView
-//            camera.photoCaptureDelegate = self
-//            camera.recordingCaptureDelegate = self
+            camera.photoCaptureDelegate = self
+            camera.recordingCaptureDelegate = self
         }
 
         timer = RecordingTimer(

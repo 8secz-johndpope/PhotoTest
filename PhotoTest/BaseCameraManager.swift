@@ -551,9 +551,9 @@ private extension BaseCameraManager {
         if session.canAddOutput(photoOutput) {
             session.addOutput(photoOutput)
             
-            livePhotoModeEnable = photoOutput.isLivePhotoCaptureSupported
-            depthDataDeliveryModeEnable = photoOutput.isDepthDataDeliverySupported
-            portraitEffectsMatteDeliveryModeEnable = photoOutput.isPortraitEffectsMatteDeliverySupported
+            livePhotoModeEnable = photoOutput.isLivePhotoCaptureSupported && _livePhotoModeEnable
+            depthDataDeliveryModeEnable = photoOutput.isDepthDataDeliverySupported && _depthDataDeliveryModeEnable
+            portraitEffectsMatteDeliveryModeEnable = photoOutput.isPortraitEffectsMatteDeliverySupported && _portraitEffectsMatteDeliveryModeEnable
             
             photoOutput.isHighResolutionCaptureEnabled = true
             photoOutput.isLivePhotoCaptureEnabled = livePhotoModeEnable
