@@ -1,0 +1,3 @@
+${PODS_ROOT}/Target Support Files/Pods-PhotoTest/Pods-PhotoTest-frameworks.sh
+${BUILT_PRODUCTS_DIR}/BetterSegmentedControl/BetterSegmentedControl.framework
+${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework

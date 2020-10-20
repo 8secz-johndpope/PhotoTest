@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="iJQ-tN-A83">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="PhotoTest" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="JRJ-0h-gWz">
+                                <rect key="frame" x="30" y="652" width="354" height="160"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nKw-w3-g18">
+                                        <rect key="frame" x="0.0" y="0.0" width="354" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="OUY-fX-2OG"/>
+                                        </constraints>
+                                        <state key="normal" title="выбрать из галереи ImagePicker"/>
+                                        <connections>
+                                            <action selector="choseFromGalery:" destination="BYZ-38-t0r" eventType="touchUpInside" id="CbR-c8-LNt"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="buS-Hc-fv3">
+                                        <rect key="frame" x="0.0" y="40" width="354" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="FEj-wP-nyS"/>
+                                        </constraints>
+                                        <state key="normal" title="сделать фото ImagePicker"/>
+                                        <connections>
+                                            <action selector="takePhoto:" destination="BYZ-38-t0r" eventType="touchUpInside" id="h6d-mD-m8m"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Oe-Yu-Zh3">
+                                        <rect key="frame" x="0.0" y="80" width="354" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="ZBW-Cy-vdr"/>
+                                        </constraints>
+                                        <state key="normal" title="сделать видео ImagePicker"/>
+                                        <connections>
+                                            <action selector="takeVideo:" destination="BYZ-38-t0r" eventType="touchUpInside" id="3bd-5B-cos"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ud9-rn-fOR">
+                                        <rect key="frame" x="0.0" y="120" width="354" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="07W-JO-Aca"/>
+                                        </constraints>
+                                        <state key="normal" title="open build-in camera"/>
+                                        <connections>
+                                            <action selector="openCamera:" destination="BYZ-38-t0r" eventType="touchUpInside" id="y7i-DR-Vd4"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xTV-6I-C8S">
+                                <rect key="frame" x="163" y="433" width="88" height="30"/>
+                                <color key="backgroundColor" systemColor="linkColor"/>
+                                <state key="normal" title="Gesture Test">
+                                    <color key="titleColor" systemColor="systemBackgroundColor"/>
+                                </state>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="xTV-6I-C8S" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ODI-9q-1c2"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="JRJ-0h-gWz" secondAttribute="trailing" constant="30" id="X1p-43-Why"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="JRJ-0h-gWz" secondAttribute="bottom" constant="50" id="jrN-kW-mH7"/>
+                            <constraint firstItem="xTV-6I-C8S" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="ow5-Nq-r6i"/>
+                            <constraint firstItem="JRJ-0h-gWz" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="30" id="yhI-rm-4dQ"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="eBI-q2-ecN"/>
+                    <connections>
+                        <outlet property="testButton" destination="xTV-6I-C8S" id="obY-YS-8gL"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="141" y="111"/>
+        </scene>
+        <!--Camera2 View Controller-->
+        <scene sceneID="DEe-dH-m3k">
+            <objects>
+                <viewController id="gQl-xQ-A4E" customClass="Camera2ViewController" customModule="PhotoTest" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="cdc-6s-CJq">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MjP-Px-cOs" customClass="PreviewView" customModule="PhotoTest" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="44" width="414" height="310.5"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nqo-aP-TVj">
+                                        <rect key="frame" x="184" y="270.5" width="46" height="30"/>
+                                        <state key="normal" title="Button"/>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="MjP-Px-cOs" secondAttribute="height" multiplier="4/3" id="a1k-6n-d1X"/>
+                                    <constraint firstItem="Nqo-aP-TVj" firstAttribute="centerX" secondItem="MjP-Px-cOs" secondAttribute="centerX" id="dmU-ab-ZfK"/>
+                                    <constraint firstAttribute="bottom" secondItem="Nqo-aP-TVj" secondAttribute="bottom" constant="10" id="s4n-2K-1Fz"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="3yI-in-jqA"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="3yI-in-jqA" firstAttribute="trailing" secondItem="MjP-Px-cOs" secondAttribute="trailing" id="Jjj-CL-PgN"/>
+                            <constraint firstItem="MjP-Px-cOs" firstAttribute="top" secondItem="3yI-in-jqA" secondAttribute="top" id="Vwc-nz-VAp"/>
+                            <constraint firstItem="MjP-Px-cOs" firstAttribute="leading" secondItem="3yI-in-jqA" secondAttribute="leading" id="ufx-bC-Uxl"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="eYG-y9-khe"/>
+                    <connections>
+                        <outlet property="previewView" destination="MjP-Px-cOs" id="KxI-9X-Sib"/>
+                        <outlet property="recordButton" destination="Nqo-aP-TVj" id="iko-om-wC5"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QoG-HW-I3U" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="942" y="104"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="XAM-kN-F1L">
+            <objects>
+                <navigationController id="iJQ-tN-A83" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="aOP-YV-Vrg">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="ASX-ew-jQe"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QVx-ua-fbQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-568" y="127"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="linkColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
