@@ -9,9 +9,9 @@ import UIKit
 import AVFoundation
 import Photos
 
-final class RecordingCaptureProcessor: NSObject, AVCaptureFileOutputRecordingDelegate {
+final class XCRecordingCaptureProcessor: NSObject, AVCaptureFileOutputRecordingDelegate {
  
-    weak var delegate: RecordingCaptureDelegate?
+    weak var delegate: XCRecordingCaptureDelegate?
     var cropRect: CGRect?
     var continueRecording: Bool = false
     var preset: AVCaptureSession.Preset = .high

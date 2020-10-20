@@ -33,40 +33,13 @@ class MediaHelper {
         }
     }
     
-    func saveToPhoto(capture: PhotoCaptureProcessor.Capture, settings: AVCapturePhotoSettings, completion: ((Bool, Error?) -> Void)? = nil) {
+    func saveToPhoto(photoData: Data, completion: ((Bool, Error?) -> Void)? = nil) {
         PHPhotoLibrary.requestAuthorization { status in
             if status == .authorized {
                 PHPhotoLibrary.shared().performChanges({
-                    let options = PHAssetResourceCreationOptions()
                     let creationRequest = PHAssetCreationRequest.forAsset()
-                    options.uniformTypeIdentifier = settings.processedFileType.map { $0.rawValue }
                     
-                    if let photoData = capture.photoData {
-                        creationRequest.addResource(with: .photo, data: photoData, options: options)
-                    }
-                    
-                    if let livePhotoCompanionMovieURL = capture.livePhotoCompanionMovieURL {
-                        let livePhotoCompanionMovieFileOptions = PHAssetResourceCreationOptions()
-                        livePhotoCompanionMovieFileOptions.shouldMoveFile = true
-                        creationRequest.addResource(with: .pairedVideo,
-                                                    fileURL: livePhotoCompanionMovieURL,
-                                                    options: livePhotoCompanionMovieFileOptions)
-                    }
-                    
-                    // Save Portrait Effects Matte to Photos Library only if it was generated
-                    if let portraitEffectsMatteData = capture.portraitEffectsMatteData {
-                        let creationRequest = PHAssetCreationRequest.forAsset()
-                        creationRequest.addResource(with: .photo,
-                                                    data: portraitEffectsMatteData,
-                                                    options: nil)
-                    }
-                    // Save Portrait Effects Matte to Photos Library only if it was generated
-                    for semanticSegmentationMatteData in capture.semanticSegmentationMatteDataArray {
-                        let creationRequest = PHAssetCreationRequest.forAsset()
-                        creationRequest.addResource(with: .photo,
-                                                    data: semanticSegmentationMatteData,
-                                                    options: nil)
-                    }
+                    creationRequest.addResource(with: .photo, data: photoData, options: nil)
                     
                 }, completionHandler: completion)
             }

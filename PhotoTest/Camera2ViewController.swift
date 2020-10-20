@@ -14,7 +14,7 @@ class Camera2ViewController: UIViewController {
     @IBOutlet weak var previewView: PreviewView!
     @IBOutlet weak var recordButton: UIButton!
     
-    private lazy var camera: CameraManager = .init { (camera) in
+    private lazy var camera: BaseCameraManager = .init { (camera) in
         camera.photoPreset = .photo
         camera.videoPreset = .high
     }
@@ -31,8 +31,8 @@ class Camera2ViewController: UIViewController {
         previewView.videoPreviewLayer.videoGravity = .resizeAspectFill
         previewView.clipsToBounds = true
         
-        camera.photoCaptureDelegate = self
-        camera.recordingCaptureDelegate = self
+//        camera.photoCaptureDelegate = self
+//        camera.recordingCaptureDelegate = self
         
         camera.flashMode = .off
         
@@ -66,7 +66,7 @@ class Camera2ViewController: UIViewController {
         }
     }
     
-    func handleCameraError(_ error: CameraManager.CameraError) {
+    func handleCameraError(_ error: BaseCameraManager.CameraError) {
         switch error {
         case .unavailable:
             showInfoAlert("Камера недоступна")
@@ -135,17 +135,17 @@ class Camera2ViewController: UIViewController {
     
 }
 
-extension Camera2ViewController: PhotoCaptureDelegate {
+extension Camera2ViewController: XCPhotoCaptureDelegate {
     
-    func photoCaptureDidFinishCapture(_ capture: PhotoCaptureProcessor.Capture?, photoSettings: AVCapturePhotoSettings, error: Error?) {
-        if let capture = capture {
-            mediaHelper.saveToPhoto(capture: capture, settings: photoSettings)
+    func photoCaptureDidFinishCapture(image: UIImage?, photoSettings: AVCaptureResolvedPhotoSettings, error: Error?) {
+        if let image = image {
+            mediaHelper.saveToPhoto(photoData: image.pngData()!)
         }
     }
     
 }
 
-extension Camera2ViewController: RecordingCaptureDelegate {
+extension Camera2ViewController: XCRecordingCaptureDelegate {
     
     func recordingCaptureDidFinishRecordingToTmpFile(_ outputFileURL: URL) {
         mediaHelper.saveToPhoto(fileURl: outputFileURL, type: .video)

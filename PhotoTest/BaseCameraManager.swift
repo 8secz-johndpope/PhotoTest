@@ -9,17 +9,18 @@ import AVFoundation
 import Photos
 import UIKit
 
-protocol CameraManagerDelegate: class {
-    func isSucceededResumingSession(_ isSucceeded: Bool)
+protocol BaseCameraManagerDelegate: class {
+    func baseCameraManagerDidChangeRunningStatus(isRunning: Bool)
+    func baseCameraManagerIsSucceededResumingSession(_ isSucceeded: Bool)
     
-    func systemPressureStateChange(_ systemPressureState: AVCaptureDevice.SystemPressureState)
+    func baseCameraManagerSystemPressureStateChange(_ systemPressureState: AVCaptureDevice.SystemPressureState)
     
-    func sessionInterruptionEnded()
-    func sessionWasInterrupted(with reason: AVCaptureSession.InterruptionReason)
-    func sessionRuntimeError(_ error: AVError)
+    func baseCameraManagerSessionInterruptionEnded()
+    func baseCameraManagerSessionWasInterrupted(with reason: AVCaptureSession.InterruptionReason)
+    func baseCameraManagerSessionRuntimeError(_ error: AVError)
 }
 
-final class CameraManager: NSObject {
+class BaseCameraManager: NSObject {
     
     // MARK: - Helpers Types
     enum SessionSetupResult {
@@ -59,7 +60,6 @@ final class CameraManager: NSObject {
     }
     
     var setupResult: SessionSetupResult = .success
-    var isRunningCallback: ((Bool) -> Void)?
     
     weak var previewView: PreviewView! {
         didSet {
@@ -67,7 +67,7 @@ final class CameraManager: NSObject {
         }
     }
     
-    weak var delegate: CameraManagerDelegate?
+    weak var cameraDelegate: BaseCameraManagerDelegate?
     
     // MARK: Modes
     // Modes values override in `configureSession`,
@@ -103,22 +103,13 @@ final class CameraManager: NSObject {
     // Depends on `isFlashAvailable`
     var flashMode: AVCaptureDevice.FlashMode = .auto
     var photoPreset: AVCaptureSession.Preset = .photo
-    var videoPreset: AVCaptureSession.Preset = .high {
-        didSet {
-            recordingCaptureProcessor.preset = videoPreset
-        }
-    }
+    var videoPreset: AVCaptureSession.Preset = .high
     
     var currentConfiguration: Configuration = .photo
     
-    // MARK: - Adapter Delegates
-    weak var photoCaptureDelegate: PhotoCaptureDelegate?
-    
-    weak var recordingCaptureDelegate: RecordingCaptureDelegate? {
-        didSet {
-            recordingCaptureProcessor.delegate = recordingCaptureDelegate
-        }
-    }
+    // MARK: - Proxy Delegates Factory
+    var photoCaptureProcessor: AVCapturePhotoCaptureDelegate?
+    var recordingCaptureProcessor: AVCaptureFileOutputRecordingDelegate?
     
     // MARK: Outputs
     let photoOutput: AVCapturePhotoOutput = .init()
@@ -128,14 +119,13 @@ final class CameraManager: NSObject {
     // MARK: Inputs
     @objc dynamic private var videoDeviceInput: AVCaptureDeviceInput!
     
+    // Non private properties for subclass usage
+    let session: AVCaptureSession = .init()
+    let sessionQueue: DispatchQueue = .init(label: "spider.ru.camera")
+    
     // MARK: - Private properties
-    private let sessionQueue: DispatchQueue = .init(label: "spider.ru.camera")
-    private let session: AVCaptureSession = .init()
-    private let audioSession = AVAudioSession.sharedInstance()
     private var isSessionRunning = false
     private var keyValueObservations: [NSKeyValueObservation] = []
-    private var inProgressLivePhotoCapturesCount = 0
-    private var inProgressPhotoCaptureDelegates = [Int64: PhotoCaptureProcessor]()
     private let videoDeviceDiscoverySession = AVCaptureDevice.DiscoverySession(
         deviceTypes: [.builtInWideAngleCamera, .builtInDualCamera, .builtInTrueDepthCamera],
         mediaType: .video,
@@ -145,44 +135,13 @@ final class CameraManager: NSObject {
     private var _depthDataDeliveryModeEnable: Bool = true
     private var _portraitEffectsMatteDeliveryModeEnable: Bool = true
     
-    private var cropRect: CGRect {
-        previewView.convert(previewView.bounds, to: nil)
-    }
-    
-    // MARK: - Proxy Delegates Factory
-    private lazy var photoCaptureProcessor: (AVCapturePhotoSettings) -> (PhotoCaptureProcessor) = { [weak self] photoSettings in
-        let photoCaptureProcessor = PhotoCaptureProcessor(
-            with: photoSettings,
-            cropRect: self?.cropRect ?? .zero,
-            livePhotoCaptureHandler: { [weak self] capturing in
-                self?.sessionQueue.async {
-                    if capturing {
-                        self?.inProgressLivePhotoCapturesCount += 1
-                    } else {
-                        self?.inProgressLivePhotoCapturesCount -= 1
-                    }
-                }
-            }, completionHandler: { [weak self] photoCaptureProcessor in
-                self?.sessionQueue.async {
-                    self?.inProgressPhotoCaptureDelegates[photoCaptureProcessor.requestedPhotoSettings.uniqueID] = nil
-                }
-            })
-        photoCaptureProcessor.delegate = self?.photoCaptureDelegate
-        return photoCaptureProcessor
-    }
-    
-    private lazy var recordingCaptureProcessor: RecordingCaptureProcessor = { [weak self] in
-        return RecordingCaptureProcessor()
-    }()
-    
     // MARK: - init
-    init(configurator: (CameraManager) -> Void) {
+    init(configurator: (BaseCameraManager) -> Void) {
         super.init()
         configurator(self)
         
         sessionQueue.async {
             self.configureSession()
-            self.configureAudioSession()
             self.addObservers()
             self.startSession()
         }
@@ -236,7 +195,7 @@ final class CameraManager: NSObject {
             self.isSessionRunning = self.session.isRunning
             
             DispatchQueue.main.async {
-                self.delegate?.isSucceededResumingSession(self.session.isRunning)
+                self.cameraDelegate?.baseCameraManagerIsSucceededResumingSession(self.session.isRunning)
             }
         }
     }
@@ -307,6 +266,11 @@ final class CameraManager: NSObject {
     }
     
     func startRecording() {
+        guard let recordingCaptureProcessor = recordingCaptureProcessor else {
+            assertionFailure("\(#function)\nBaseCameraManager warning: set AVCaptureFileOutputRecordingDelegate")
+            return
+        }
+        
         guard let movieFileOutput = self.movieFileOutput, !movieFileOutput.isRecording else {
             return
         }
@@ -323,7 +287,7 @@ final class CameraManager: NSObject {
                 movieFileOutput.setOutputSettings([AVVideoCodecKey: AVVideoCodecType.hevc], for: movieFileOutputConnection!)
             }
             
-            movieFileOutput.startRecording(to: .generateVideoURl, recordingDelegate: self.recordingCaptureProcessor)
+            movieFileOutput.startRecording(to: .generateVideoURl, recordingDelegate: recordingCaptureProcessor)
         }
     }
     
@@ -332,15 +296,17 @@ final class CameraManager: NSObject {
             return
         }
         
-        recordingCaptureProcessor.cropRect = cropRect
-        recordingCaptureProcessor.continueRecording = false
-        
         sessionQueue.async {
             movieFileOutput.stopRecording()
         }
     }
     
     func capturePhoto() {
+        guard let photoCaptureProcessor = photoCaptureProcessor else {
+            assertionFailure("\(#function)\nBaseCameraManager warning: set AVCapturePhotoCaptureDelegate")
+            return
+        }
+        
         let videoPreviewLayerOrientation = previewView.videoPreviewLayer.connection?.videoOrientation
         
         sessionQueue.async {
@@ -370,10 +336,6 @@ final class CameraManager: NSObject {
             photoSettings.isDepthDataDeliveryEnabled = self.depthDataDeliveryModeEnable
             photoSettings.isPortraitEffectsMatteDeliveryEnabled = self.portraitEffectsMatteDeliveryModeEnable
             
-            let photoCaptureProcessor = self.photoCaptureProcessor(photoSettings)
-            
-            // The photo output holds a weak reference to the photo capture delegate and stores it in an array to maintain a strong reference.
-            self.inProgressPhotoCaptureDelegates[photoCaptureProcessor.requestedPhotoSettings.uniqueID] = photoCaptureProcessor
             self.photoOutput.capturePhoto(with: photoSettings, delegate: photoCaptureProcessor)
         }
     }
@@ -385,7 +347,7 @@ final class CameraManager: NSObject {
                 self.videoDeviceInput.device.videoZoomFactor = factor
                 self.videoDeviceInput.device.unlockForConfiguration()
             } catch let error {
-                print("Could not lock configuration: Error \(error)")
+                assertionFailure("BaseCameraManager did receive error: \(error)")
             }
         }
     }
@@ -399,96 +361,60 @@ final class CameraManager: NSObject {
                 }
                 self.videoDeviceInput.device.unlockForConfiguration()
             } catch let error {
-                print("Could not lock configuration: Error \(error)")
+                assertionFailure("BaseCameraManager did receive error: \(error)")
             }
         }
     }
     
     func changeCamera(completion: ((Error?) -> Void)?) {
-        if movieFileOutput?.isRecording ?? false {
-            changeCameraWhileRecodring(completion)
-        } else {
-            changeCameraNoRecording(completion)
-        }
-    }
- 
-}
-
-// MARK: - Private -
-private extension CameraManager {
-    
-    func startSession() {
-        guard setupResult.isSuccess else { return }
-        session.startRunning()
-        isSessionRunning = session.isRunning
-    }
-    
-    func stopSession() {
-        guard setupResult.isSuccess else { return }
-        session.stopRunning()
-        isSessionRunning = session.isRunning
-    }
-    
-    func stopRecordingToChangeCamera() {
-        guard let movieFileOutput = self.movieFileOutput, movieFileOutput.isRecording else {
-            return
-        }
-        
-        sessionQueue.async {
-            self.recordingCaptureProcessor.continueRecording = true
-            movieFileOutput.stopRecording()
-        }
-    }
-    
-    func changeCameraNoRecording(_ completion: ((Error?) -> Void)?) {
         sessionQueue.async {
             var error: Error?
-
+            
             let currentVideoDevice = self.videoDeviceInput.device
             let currentPosition = currentVideoDevice.position
-
+            
             let preferredPosition: AVCaptureDevice.Position
             let preferredDeviceType: AVCaptureDevice.DeviceType
-
+            
             switch currentPosition {
             case .unspecified, .front:
                 preferredPosition = .back
                 preferredDeviceType = .builtInDualCamera
-
+                
             case .back:
                 preferredPosition = .front
                 preferredDeviceType = .builtInTrueDepthCamera
-
+                
             @unknown default:
-                print("Unknown capture position. Defaulting to back, dual-camera.")
+                assertionFailure("\(#function)\nBaseCameraManager warning: Unknown capture position. Defaulting to back, dual-camera.")
                 preferredPosition = .back
                 preferredDeviceType = .builtInDualCamera
             }
             let devices = self.videoDeviceDiscoverySession.devices
             var newVideoDevice: AVCaptureDevice? = nil
-
+            
             // First, seek a device with both the preferred position and device type. Otherwise, seek a device with only the preferred position.
             if let device = devices.first(where: { $0.position == preferredPosition && $0.deviceType == preferredDeviceType }) {
                 newVideoDevice = device
             } else if let device = devices.first(where: { $0.position == preferredPosition }) {
                 newVideoDevice = device
             }
-
+            
             if let videoDevice = newVideoDevice {
                 do {
                     let videoDeviceInput = try AVCaptureDeviceInput(device: videoDevice)
-
+                    
                     self.session.beginConfiguration()
-
+                    
                     // Remove the existing device input first, because AVCaptureSession doesn't support
                     // simultaneous use of the rear and front cameras.
                     self.session.removeInput(self.videoDeviceInput)
-//
-
+                    //
+                    
                     if self.session.canAddInput(videoDeviceInput) {
                         NotificationCenter.default.removeObserver(self, name: .AVCaptureDeviceSubjectAreaDidChange, object: currentVideoDevice)
                         NotificationCenter.default.addObserver(self, selector: #selector(self.subjectAreaDidChange), name: .AVCaptureDeviceSubjectAreaDidChange, object: videoDeviceInput.device)
-
+                        
                         self.session.addInput(videoDeviceInput)
                         self.videoDeviceInput = videoDeviceInput
                     } else {
@@ -509,25 +435,32 @@ private extension CameraManager {
                     self.photoOutput.isLivePhotoCaptureEnabled = self.livePhotoModeEnable
                     self.photoOutput.isDepthDataDeliveryEnabled = self.depthDataDeliveryModeEnable
                     self.photoOutput.isPortraitEffectsMatteDeliveryEnabled = self.portraitEffectsMatteDeliveryModeEnable
-
+                    
                     self.session.commitConfiguration()
                 } catch let captureDeviceError {
                     error = captureDeviceError
                 }
             }
-
+            
             completion?(error)
         }
     }
     
-    func changeCameraWhileRecodring(_ completion: ((Error?) -> Void)?) {
-        sessionQueue.async {
-            self.stopRecordingToChangeCamera()
-            self.changeCameraNoRecording { (error) in
-                self.startRecording()
-                completion?(error)
-            }
-        }
+}
+
+// MARK: - Private -
+private extension BaseCameraManager {
+    
+    func startSession() {
+        guard setupResult.isSuccess else { return }
+        session.startRunning()
+        isSessionRunning = session.isRunning
+    }
+    
+    func stopSession() {
+        guard setupResult.isSuccess else { return }
+        session.stopRunning()
+        isSessionRunning = session.isRunning
     }
     
     // MARK: - Configure
@@ -556,7 +489,7 @@ private extension CameraManager {
             }
             
             guard let videoDevice = defaultVideoDevice else {
-                print("Default video device is unavailable.")
+                print("BaseCameraManager warning: Default video device is unavailable.")
                 setupResult = .configurationFailed(.unavailable)
                 session.commitConfiguration()
                 return
@@ -588,14 +521,14 @@ private extension CameraManager {
                     self.previewView.videoPreviewLayer.connection?.videoOrientation = initialVideoOrientation
                 }
             } else {
-                print("Couldn't add video device input to the session.")
+                print("BaseCameraManager warning: Couldn't add video device input to the session.")
                 setupResult = .configurationFailed(.videoInput)
                 session.commitConfiguration()
                 return
             }
             
         } catch {
-            print("Couldn't create video device input: \(error)")
+            print("BaseCameraManager warning: Couldn't create video device input: \(error)")
             setupResult = .configurationFailed(.videoInput)
             session.commitConfiguration()
             return
@@ -608,11 +541,11 @@ private extension CameraManager {
             if session.canAddInput(audioDeviceInput) {
                 session.addInput(audioDeviceInput)
             } else {
-                print("Could not add audio device input to the session")
+                print("BaseCameraManager warning: Could not add audio device input to the session")
             }
             
         } catch {
-            print("Could not create audio device input: \(error)")
+            print("BaseCameraManager warning: Could not create audio device input: \(error)")
         }
         
         if session.canAddOutput(photoOutput) {
@@ -633,7 +566,7 @@ private extension CameraManager {
             }
             
         } else {
-            print("Could not add photo output to the session")
+            print("BaseCameraManager warning: Could not add photo output to the session")
             setupResult = .configurationFailed(.videoInput)
             session.commitConfiguration()
             return
@@ -642,23 +575,12 @@ private extension CameraManager {
         session.commitConfiguration()
     }
     
-    func configureAudioSession() {
-        do {
-            try audioSession.setCategory(.playAndRecord, options: [.mixWithOthers, .defaultToSpeaker])
-            try audioSession.setActive(true)
-        } catch let error as NSError {
-            print("Could not set category. Error: \(error)")
-        }
-        
-        session.automaticallyConfiguresApplicationAudioSession = false
-    }
-    
     func addObservers() {
         let isRunningKVO = session.observe(\.isRunning, options: .new) { [weak self] _, change in
             guard let isSessionRunning = change.newValue else { return }
 
             DispatchQueue.main.async {
-                self?.isRunningCallback?(isSessionRunning)
+                self?.cameraDelegate?.baseCameraManagerDidChangeRunningStatus(isRunning: isSessionRunning)
             }
         }
         
@@ -722,23 +644,19 @@ private extension CameraManager {
     // MARK: - Session and Device errors
     
     func setRecommendedFrameRateRangeForPressureState(systemPressureState: AVCaptureDevice.SystemPressureState) {
-        /*
-         The frame rates used here are only for demonstration purposes.
-         Your frame rate throttling may be different depending on your app's camera configuration.
-         */
-        delegate?.systemPressureStateChange(systemPressureState)
+        cameraDelegate?.baseCameraManagerSystemPressureStateChange(systemPressureState)
         
         let pressureLevel = systemPressureState.level
         if pressureLevel == .serious || pressureLevel == .critical {
             if self.movieFileOutput == nil || self.movieFileOutput?.isRecording == false {
                 do {
                     try self.videoDeviceInput.device.lockForConfiguration()
-                    print("WARNING: Reached elevated system pressure level: \(pressureLevel). Throttling frame rate.")
+                    print("BaseCameraManager warning: Reached elevated system pressure level: \(pressureLevel). Throttling frame rate.")
                     self.videoDeviceInput.device.activeVideoMinFrameDuration = CMTime(value: 1, timescale: 20)
                     self.videoDeviceInput.device.activeVideoMaxFrameDuration = CMTime(value: 1, timescale: 15)
                     self.videoDeviceInput.device.unlockForConfiguration()
                 } catch {
-                    print("Could not lock device for configuration: \(error)")
+                    print("BaseCameraManager warning: Could not lock device for configuration: \(error)")
                 }
             }
         }
@@ -746,8 +664,8 @@ private extension CameraManager {
     
     @objc func sessionRuntimeError(notification: NSNotification) {
         guard let error = notification.userInfo?[AVCaptureSessionErrorKey] as? AVError else { return }
-        print("Capture session runtime error: \(error)")
-        delegate?.sessionRuntimeError(error)
+        print("\(#function)\nBaseCameraManager did receive error: \(error)")
+        cameraDelegate?.baseCameraManagerSessionRuntimeError(error)
         
         // If media services were reset, and the last start succeeded, restart the session.
         if error.code == .mediaServicesWereReset {
@@ -790,7 +708,7 @@ private extension CameraManager {
                 device.isSubjectAreaChangeMonitoringEnabled = monitorSubjectAreaChange
                 device.unlockForConfiguration()
             } catch {
-                print("Could not lock device for configuration: \(error)")
+                print("BaseCameraManager warning: Could not lock device for configuration: \(error)")
             }
         }
     }
@@ -803,13 +721,13 @@ private extension CameraManager {
               let reasonIntegerValue = userInfoValue.integerValue,
               let reason = AVCaptureSession.InterruptionReason(rawValue: reasonIntegerValue) else { return }
         
-        print("Capture session was interrupted with reason \(reason)")
-        delegate?.sessionWasInterrupted(with: reason)
+        print("BaseCameraManager warning: Capture session was interrupted with reason \(reason)")
+        cameraDelegate?.baseCameraManagerSessionWasInterrupted(with: reason)
     }
     
     @objc func sessionInterruptionEnded(notification: NSNotification) {
-        print("Capture session interruption ended")
-        delegate?.sessionInterruptionEnded()
+        print("BaseCameraManager: Capture session interruption ended")
+        cameraDelegate?.baseCameraManagerSessionInterruptionEnded()
     }
     
 }

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4E06B00025308B45000EA83A /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E06AFFF25308B45000EA83A /* CameraManager.swift */; };
+		4E06B00025308B45000EA83A /* BaseCameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E06AFFF25308B45000EA83A /* BaseCameraManager.swift */; };
 		4E06B00B2530A0D2000EA83A /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E06B00A2530A0D2000EA83A /* Utils.swift */; };
 		4E8924A3252DB0AB00706D21 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8924A2252DB0AB00706D21 /* AppDelegate.swift */; };
 		4E8924A7252DB0AB00706D21 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8924A6252DB0AB00706D21 /* ViewController.swift */; };
@@ -24,17 +24,18 @@
 		4EAD48AF253D8BD50001242C /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAD48AE253D8BD50001242C /* CameraViewController.swift */; };
 		4EAD48B7253DA2130001242C /* VideoProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAD48B6253DA2130001242C /* VideoProgressView.swift */; };
 		4EAD48BA253DA8390001242C /* VideoTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAD48B9253DA8390001242C /* VideoTimer.swift */; };
-		4EB143B72535838300F2FB80 /* RecordingCaptureProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB143B62535838300F2FB80 /* RecordingCaptureProcessor.swift */; };
-		4EB143BA253599E900F2FB80 /* PhotoCaptureDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB143B9253599E900F2FB80 /* PhotoCaptureDelegate.swift */; };
-		4EB143BE25359A2300F2FB80 /* RecordingCaptureDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB143BD25359A2300F2FB80 /* RecordingCaptureDelegate.swift */; };
+		4EB143B72535838300F2FB80 /* XCRecordingCaptureProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB143B62535838300F2FB80 /* XCRecordingCaptureProcessor.swift */; };
+		4EB143BA253599E900F2FB80 /* XCPhotoCaptureDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB143B9253599E900F2FB80 /* XCPhotoCaptureDelegate.swift */; };
+		4EB143BE25359A2300F2FB80 /* XCRecordingCaptureDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB143BD25359A2300F2FB80 /* XCRecordingCaptureDelegate.swift */; };
 		4EB143C12535AA2200F2FB80 /* RecordGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB143C02535AA2200F2FB80 /* RecordGestureRecognizer.swift */; };
 		4EB44DA7253441C000ABE55C /* UIViewController+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB44DA6253441C000ABE55C /* UIViewController+extension.swift */; };
-		4EB44DBB25349D3900ABE55C /* PhotoCaptureProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB44DBA25349D3800ABE55C /* PhotoCaptureProcessor.swift */; };
+		4EB44DBB25349D3900ABE55C /* XCPhotoCaptureProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB44DBA25349D3800ABE55C /* XCPhotoCaptureProcessor.swift */; };
+		4ED534CF253EC93800847ADD /* XCCameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED534CE253EC93800847ADD /* XCCameraManager.swift */; };
 		8637E5232F361680E826D748 /* Pods_PhotoTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E20AACB81F8A380C5B03A84E /* Pods_PhotoTest.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4E06AFFF25308B45000EA83A /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
+		4E06AFFF25308B45000EA83A /* BaseCameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCameraManager.swift; sourceTree = "<group>"; };
 		4E06B00A2530A0D2000EA83A /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		4E89249F252DB0AB00706D21 /* PhotoTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E8924A2252DB0AB00706D21 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -53,12 +54,13 @@
 		4EAD48AE253D8BD50001242C /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		4EAD48B6253DA2130001242C /* VideoProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoProgressView.swift; sourceTree = "<group>"; };
 		4EAD48B9253DA8390001242C /* VideoTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoTimer.swift; sourceTree = "<group>"; };
-		4EB143B62535838300F2FB80 /* RecordingCaptureProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingCaptureProcessor.swift; sourceTree = "<group>"; };
-		4EB143B9253599E900F2FB80 /* PhotoCaptureDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCaptureDelegate.swift; sourceTree = "<group>"; };
-		4EB143BD25359A2300F2FB80 /* RecordingCaptureDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingCaptureDelegate.swift; sourceTree = "<group>"; };
+		4EB143B62535838300F2FB80 /* XCRecordingCaptureProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCRecordingCaptureProcessor.swift; sourceTree = "<group>"; };
+		4EB143B9253599E900F2FB80 /* XCPhotoCaptureDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCPhotoCaptureDelegate.swift; sourceTree = "<group>"; };
+		4EB143BD25359A2300F2FB80 /* XCRecordingCaptureDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCRecordingCaptureDelegate.swift; sourceTree = "<group>"; };
 		4EB143C02535AA2200F2FB80 /* RecordGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordGestureRecognizer.swift; sourceTree = "<group>"; };
 		4EB44DA6253441C000ABE55C /* UIViewController+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+extension.swift"; sourceTree = "<group>"; };
-		4EB44DBA25349D3800ABE55C /* PhotoCaptureProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCaptureProcessor.swift; sourceTree = "<group>"; };
+		4EB44DBA25349D3800ABE55C /* XCPhotoCaptureProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCPhotoCaptureProcessor.swift; sourceTree = "<group>"; };
+		4ED534CE253EC93800847ADD /* XCCameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCCameraManager.swift; sourceTree = "<group>"; };
 		9AD9458A55AE2AB970F7D4A6 /* Pods-PhotoTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoTest.release.xcconfig"; path = "Target Support Files/Pods-PhotoTest/Pods-PhotoTest.release.xcconfig"; sourceTree = "<group>"; };
 		A570EBFD4F54B2E5CA7D2656 /* Pods-PhotoTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoTest.debug.xcconfig"; path = "Target Support Files/Pods-PhotoTest/Pods-PhotoTest.debug.xcconfig"; sourceTree = "<group>"; };
 		E20AACB81F8A380C5B03A84E /* Pods_PhotoTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PhotoTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -126,11 +128,12 @@
 				4EAD48B9253DA8390001242C /* VideoTimer.swift */,
 				4EAD48A3253D81C40001242C /* CameraView.swift */,
 				4EAD48B6253DA2130001242C /* VideoProgressView.swift */,
-				4E06AFFF25308B45000EA83A /* CameraManager.swift */,
-				4EB143B62535838300F2FB80 /* RecordingCaptureProcessor.swift */,
-				4EB143BD25359A2300F2FB80 /* RecordingCaptureDelegate.swift */,
-				4EB44DBA25349D3800ABE55C /* PhotoCaptureProcessor.swift */,
-				4EB143B9253599E900F2FB80 /* PhotoCaptureDelegate.swift */,
+				4E06AFFF25308B45000EA83A /* BaseCameraManager.swift */,
+				4ED534CE253EC93800847ADD /* XCCameraManager.swift */,
+				4EB143B62535838300F2FB80 /* XCRecordingCaptureProcessor.swift */,
+				4EB143BD25359A2300F2FB80 /* XCRecordingCaptureDelegate.swift */,
+				4EB44DBA25349D3800ABE55C /* XCPhotoCaptureProcessor.swift */,
+				4EB143B9253599E900F2FB80 /* XCPhotoCaptureDelegate.swift */,
 				4E06B00A2530A0D2000EA83A /* Utils.swift */,
 				4E8924BC252DC17800706D21 /* PreviewView.swift */,
 				4E8924B7252DB1DB00706D21 /* ImagePicker.swift */,
@@ -261,17 +264,18 @@
 				4EA76A272536FB1300E174D1 /* GalleryCollectionViewCell.swift in Sources */,
 				4EB44DA7253441C000ABE55C /* UIViewController+extension.swift in Sources */,
 				4E8924BD252DC17800706D21 /* PreviewView.swift in Sources */,
-				4E06B00025308B45000EA83A /* CameraManager.swift in Sources */,
+				4E06B00025308B45000EA83A /* BaseCameraManager.swift in Sources */,
 				4E8924A7252DB0AB00706D21 /* ViewController.swift in Sources */,
 				4EAD48BA253DA8390001242C /* VideoTimer.swift in Sources */,
 				4EB143C12535AA2200F2FB80 /* RecordGestureRecognizer.swift in Sources */,
 				4E06B00B2530A0D2000EA83A /* Utils.swift in Sources */,
-				4EB143BE25359A2300F2FB80 /* RecordingCaptureDelegate.swift in Sources */,
+				4EB143BE25359A2300F2FB80 /* XCRecordingCaptureDelegate.swift in Sources */,
 				4E8924B8252DB1DB00706D21 /* ImagePicker.swift in Sources */,
-				4EB143BA253599E900F2FB80 /* PhotoCaptureDelegate.swift in Sources */,
-				4EB44DBB25349D3900ABE55C /* PhotoCaptureProcessor.swift in Sources */,
+				4EB143BA253599E900F2FB80 /* XCPhotoCaptureDelegate.swift in Sources */,
+				4EB44DBB25349D3900ABE55C /* XCPhotoCaptureProcessor.swift in Sources */,
 				4EAD48A4253D81C40001242C /* CameraView.swift in Sources */,
-				4EB143B72535838300F2FB80 /* RecordingCaptureProcessor.swift in Sources */,
+				4EB143B72535838300F2FB80 /* XCRecordingCaptureProcessor.swift in Sources */,
+				4ED534CF253EC93800847ADD /* XCCameraManager.swift in Sources */,
 				4EA76A242536FA0A00E174D1 /* GalleryViewController.swift in Sources */,
 				4E8924A3252DB0AB00706D21 /* AppDelegate.swift in Sources */,
 				4E8924C0252DC19B00706D21 /* Camera2ViewController.swift in Sources */,

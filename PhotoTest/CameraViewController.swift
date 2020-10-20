@@ -21,12 +21,12 @@ class CameraViewController: UIViewController {
     private weak var videoProgressView: UIProgressView!
     private weak var timerLabel: UILabel!
     
-    private var camera: CameraManager!
+    private var camera: XCCameraManager!
     private var timer: RecordingTimer!
     private lazy var mediaHelper: MediaHelper = .init()
     
-    private var configuration: CameraManager.Configuration {
-        CameraManager.Configuration(rawValue: photoVideoControl.index) ?? .photo
+    private var configuration: BaseCameraManager.Configuration {
+        BaseCameraManager.Configuration(rawValue: photoVideoControl.index) ?? .photo
     }
     
     // MARK: - Lifecycle
@@ -72,14 +72,14 @@ class CameraViewController: UIViewController {
     }
     
     private func configureCamera() {
-        camera = CameraManager { [unowned self] (camera) in
+        camera = XCCameraManager { [unowned self] (camera) in
             camera.photoPreset = .photo
             camera.videoPreset = .high
             camera.flashMode = .off
             
             camera.previewView = self.previewView
-            camera.photoCaptureDelegate = self
-            camera.recordingCaptureDelegate = self
+//            camera.photoCaptureDelegate = self
+//            camera.recordingCaptureDelegate = self
         }
 
         timer = RecordingTimer(
@@ -103,7 +103,7 @@ class CameraViewController: UIViewController {
         }
     }
     
-    private func handleCameraError(_ error: CameraManager.CameraError) {
+    private func handleCameraError(_ error: BaseCameraManager.CameraError) {
         switch error {
         case .unavailable:
             showInfoAlert("Камера недоступна")
@@ -172,7 +172,7 @@ class CameraViewController: UIViewController {
     
 }
 
-extension CameraViewController: PhotoCaptureDelegate {
+extension CameraViewController: XCPhotoCaptureDelegate {
     
     func photoCaptureWillCapture() {
         previewView.videoPreviewLayer.opacity = 0
@@ -181,19 +181,15 @@ extension CameraViewController: PhotoCaptureDelegate {
         }
     }
     
-    func photoCaptureProcessingPhoto(isProcessing: Bool) {
-        isProcessing ? activityIndicator.startAnimating() : activityIndicator.stopAnimating()
-    }
-    
-    func photoCaptureDidFinishCapture(_ capture: PhotoCaptureProcessor.Capture?, photoSettings: AVCapturePhotoSettings, error: Error?) {
-        if let capture = capture {
-            mediaHelper.saveToPhoto(capture: capture, settings: photoSettings)
+    func photoCaptureDidFinishCapture(image: UIImage?, photoSettings: AVCaptureResolvedPhotoSettings, error: Error?) {
+        if let image = image {
+            mediaHelper.saveToPhoto(photoData: image.pngData()!)
         }
     }
     
 }
 
-extension CameraViewController: RecordingCaptureDelegate {
+extension CameraViewController: XCRecordingCaptureDelegate {
     
     func recordingCaptureProcessingFiles(isProcessing: Bool) {
         isProcessing ? activityIndicator.startAnimating() : activityIndicator.stopAnimating()
