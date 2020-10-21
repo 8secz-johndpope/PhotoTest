@@ -63,7 +63,7 @@ final class XCRecordingCaptureProcessor: NSObject, AVCaptureFileOutputRecordingD
         let asset = AVAsset(url: urls.first)
         let assetVideoTrack = asset?.tracks(withMediaType: .video).first
         
-        videoComposition.renderSize = assetVideoTrack?.renderSize(for: adoptRect.size) ?? adoptRect.size
+        videoComposition.renderSize = assetVideoTrack?.scaledSize(for: adoptRect.size) ?? adoptRect.size
         videoComposition.frameDuration = CMTimeMake(value: 1, timescale: 25)
         
         var insetTime: CMTime = .zero
@@ -120,32 +120,15 @@ final class XCRecordingCaptureProcessor: NSObject, AVCaptureFileOutputRecordingD
     
 }
 
-private extension String {
+// MARK: - Helpers -
+private extension AVAssetTrack {
     
-    init(preset: AVCaptureSession.Preset) {
-        switch preset {
-        case .hd1280x720:    self = AVAssetExportPreset1280x720
-        case .hd1920x1080:   self = AVAssetExportPreset1920x1080
-        case .hd4K3840x2160: self = AVAssetExportPreset3840x2160
-        case .high:          self = AVAssetExportPresetHighestQuality
-        case .low: 	         self = AVAssetExportPresetLowQuality
-        case .medium:        self = AVAssetExportPresetMediumQuality
-        case .vga640x480:    self = AVAssetExportPreset640x480
-        case .iFrame960x540: self = AVAssetExportPreset960x540
-        default:             self = AVAssetExportPresetPassthrough
-        }
-    }
-    
-}
-
-extension AVAssetTrack {
-    
-    func renderSize(for cropSize: CGSize) -> CGSize {
+    func scaledSize(for cropSize: CGSize) -> CGSize {
         let assetInfo = orientationFromTransform()
         
-        var scaleToFitRatio = naturalSize.width / cropSize.width
+        var scaleToFitRatio = naturalSize.height / cropSize.height
         if assetInfo.isPortrait {
-            scaleToFitRatio = naturalSize.height / cropSize.height
+            scaleToFitRatio = naturalSize.height / cropSize.width
         }
         
         let scaleSize = CGSize(width: cropSize.width * scaleToFitRatio, height: cropSize.height * scaleToFitRatio)
@@ -160,19 +143,13 @@ extension AVAssetTrack {
         
         var finalTransform = preferredTransform
         let assetInfo = orientationFromTransform()
-        
-        var scaleToFitRatio = naturalSize.width / cropRect.width
-        if assetInfo.isPortrait {
-            scaleToFitRatio = naturalSize.width / cropRect.height
-        }
-//        let scaleTransform = CGAffineTransform(scaleX: scaleToFitRatio, y: scaleToFitRatio)
-        let scaleSize = CGSize(width: cropRect.width * scaleToFitRatio, height: cropRect.height * scaleToFitRatio)
+        let scaleSize = scaledSize(for: cropRect.size)
         
         /// - TODO:
         let centerFactor = assetInfo.isPortrait ? (scaleSize.width - cropRect.size.height) / 2 : (scaleSize.height - cropRect.size.height) / 2
         
-//        finalTransform.tx = finalTransform.tx - cropRect.origin.x
-//        finalTransform.ty = finalTransform.ty - centerFactor
+        finalTransform.tx = finalTransform.tx - cropRect.origin.x
+        finalTransform.ty = finalTransform.ty - centerFactor
         
         layerInstruction.setTransform(finalTransform, at: .zero)
         instruction.layerInstructions = [layerInstruction]
@@ -203,11 +180,29 @@ extension AVAssetTrack {
     }
 }
 
-extension CGRect {
+private extension CGRect {
     
     func adoptForAVC() -> CGRect {
         let size = CGSize(width: floor(width / 16) * 16, height: floor(height / 16) * 16)
         return CGRect(origin: origin, size: size)
+    }
+    
+}
+
+private extension String {
+    
+    init(preset: AVCaptureSession.Preset) {
+        switch preset {
+        case .hd1280x720:    self = AVAssetExportPreset1280x720
+        case .hd1920x1080:   self = AVAssetExportPreset1920x1080
+        case .hd4K3840x2160: self = AVAssetExportPreset3840x2160
+        case .high:          self = AVAssetExportPresetHighestQuality
+        case .low:              self = AVAssetExportPresetLowQuality
+        case .medium:        self = AVAssetExportPresetMediumQuality
+        case .vga640x480:    self = AVAssetExportPreset640x480
+        case .iFrame960x540: self = AVAssetExportPreset960x540
+        default:             self = AVAssetExportPresetPassthrough
+        }
     }
     
 }

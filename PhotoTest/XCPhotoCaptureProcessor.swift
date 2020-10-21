@@ -19,14 +19,14 @@ class XCPhotoCaptureProcessor: NSObject {
     private lazy var context = CIContext()
     
     // MARK: - Private methods
-    private func cropImage(_ pixelBuffer: CVPixelBuffer, orientation: CGImagePropertyOrientation) -> UIImage {
+    private func cropImage(_ pixelBuffer: CVPixelBuffer, orientation: CGImagePropertyOrientation) -> UIImage? {
         let cropRect = self.cropRect ?? .zero
         let ciImage = CIImage(cvPixelBuffer: pixelBuffer).oriented(orientation)
         let naturalSize = ciImage.extent
         
-        var scaleToFitRatio = naturalSize.width / cropRect.size.width
+        var scaleToFitRatio = naturalSize.height / cropRect.height
         if orientation.isPortrait {
-            scaleToFitRatio = naturalSize.width / cropRect.size.height
+            scaleToFitRatio = naturalSize.height / cropRect.width
         }
         
         let scaledHeight = cropRect.height * scaleToFitRatio
