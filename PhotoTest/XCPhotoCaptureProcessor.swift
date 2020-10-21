@@ -19,9 +19,24 @@ class XCPhotoCaptureProcessor: NSObject {
     private lazy var context = CIContext()
     
     // MARK: - Private methods
-    private func cropImage(_ pixelBuffer: CVPixelBuffer) -> UIImage {
-        let ciImage = CIImage(cvPixelBuffer: pixelBuffer)
-        let cropImage = ciImage.cropped(to: cropRect ?? .zero)
+    private func cropImage(_ pixelBuffer: CVPixelBuffer, orientation: CGImagePropertyOrientation) -> UIImage {
+        let cropRect = self.cropRect ?? .zero
+        let ciImage = CIImage(cvPixelBuffer: pixelBuffer).oriented(orientation)
+        let naturalSize = ciImage.extent
+        
+        var scaleToFitRatio = naturalSize.width / cropRect.size.width
+        if orientation.isPortrait {
+            scaleToFitRatio = naturalSize.width / cropRect.size.height
+        }
+        
+        let scaledHeight = cropRect.height * scaleToFitRatio
+        let scaledWidth = cropRect.width * scaleToFitRatio
+        let yCenterFactor = (naturalSize.height - scaledHeight) / 2
+        let xCenterFactor = (naturalSize.width - scaledWidth) / 2
+        let scaledRect = CGRect(x: xCenterFactor, y: yCenterFactor, width: scaledWidth, height: scaledHeight)
+        
+        let cropImage = ciImage.cropped(to: scaledRect)
+        
         let image = UIImage(ciImage: cropImage)
         return image
     }
@@ -36,9 +51,11 @@ extension XCPhotoCaptureProcessor: AVCapturePhotoCaptureDelegate {
     
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         var image: UIImage?
+        let orientationMetadata = photo.metadata[String(kCGImagePropertyOrientation)] as? UInt32
+        let orientation = CGImagePropertyOrientation(rawValue: orientationMetadata ?? 6) // default right
         
         if let pixelBuffer = photo.previewPixelBuffer {
-            image = cropImage(pixelBuffer)
+            image = cropImage(pixelBuffer, orientation: orientation ?? .right)
         }
         
         delegate?.photoCaptureDidFinishCapture(image: image, photoSettings: photo.resolvedSettings, error: error)

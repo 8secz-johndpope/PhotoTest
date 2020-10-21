@@ -184,7 +184,7 @@ extension CameraViewController: XCPhotoCaptureDelegate {
     
     func photoCaptureDidFinishCapture(image: UIImage?, photoSettings: AVCaptureResolvedPhotoSettings, error: Error?) {
         if let image = image {
-            mediaHelper.saveToPhoto(photoData: image.pngData()!)
+            mediaHelper.saveToPhoto(photoData: image.jpegData(compressionQuality: 1)!)
         }
     }
     

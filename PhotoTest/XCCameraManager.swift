@@ -28,10 +28,10 @@ final class XCCameraManager: BaseCameraManager {
     private let audioSession = AVAudioSession.sharedInstance()
     
     private var cropRect: CGRect {
-//        previewView.convert(previewView.bounds, to: nil)
-        let metadataOutputRect = previewView.videoPreviewLayer.metadataOutputRectConverted(fromLayerRect: previewView.bounds)
-        let r2 = CGRect(x: metadataOutputRect.origin.x * previewView.bounds.size.width, y: metadataOutputRect.origin.y * previewView.bounds.size.height, width: metadataOutputRect.size.width * previewView.bounds.size.width, height: metadataOutputRect.size.height * previewView.bounds.size.height)
-        return r2
+        previewView.convert(previewView.bounds, to: nil)
+//        let metadataOutputRect = previewView.videoPreviewLayer.metadataOutputRectConverted(fromLayerRect: previewView.frame)
+//        let r2 = CGRect(x: metadataOutputRect.origin.x * previewView.bounds.size.width, y: metadataOutputRect.origin.y * previewView.bounds.size.height, width: metadataOutputRect.size.width * previewView.bounds.size.width, height: metadataOutputRect.size.height * previewView.bounds.size.height)
+//        return r2
     }
     
     // MARK: - Proxy Delegates
