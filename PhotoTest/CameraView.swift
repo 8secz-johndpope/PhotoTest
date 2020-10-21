@@ -20,8 +20,6 @@ final class CameraView: UIView {
     var videoProgressView: UIProgressView!
     var timerLabel: UILabel!
 
-    private var controlsView: UIView!
-    private var stackView: UIStackView!
     private var controlsStackView: UIStackView!
     private var photoVideoControlWrapper: UIView!
     private var videoProgressViewWrapper: UIView!
@@ -116,34 +114,18 @@ final class CameraView: UIView {
             return i
         }()
         
-        controlsView = {
-            let i = UIView()
-            i.backgroundColor = .white
-            return i
-        }()
-        
-        stackView = {
-            let i = UIStackView()
-            i.axis = .vertical
-            return i
-        }()
-        
         controlsStackView = {
             let i = UIStackView()
             i.axis = .vertical
             return i
         }()
         
-        addSubview(stackView)
-        
-        stackView.addArrangedSubview(previewView)
-        stackView.addArrangedSubview(controlsView)
+        addSubview(previewView)
+        addSubview(controlsStackView)
         
         previewView.addSubview(changeCameraButton)
         previewView.addSubview(flashButton)
         previewView.addSubview(activityIndicator)
-        
-        controlsView.addSubview(controlsStackView)
         
         controlsStackView.addArrangedSubview(videoProgressViewWrapper)
         controlsStackView.addArrangedSubview(photoVideoControlWrapper)
@@ -161,12 +143,8 @@ final class CameraView: UIView {
         controlsStackView.setCustomSpacing(22, after: photoVideoControlWrapper)
         controlsStackView.setCustomSpacing(16, after: timerLabelWrapper)
         
-        stackView.snp.makeConstraints {
-            $0.edges.equalTo(safeAreaLayoutGuide)
-        }
-        
         previewView.snp.makeConstraints {
-            $0.height.equalToSuperview().multipliedBy(0.65)
+            $0.edges.equalTo(safeAreaLayoutGuide)
         }
         
         activityIndicator.snp.makeConstraints {
@@ -175,19 +153,18 @@ final class CameraView: UIView {
         
         changeCameraButton.snp.makeConstraints {
             $0.leading.equalTo(17)
-            $0.bottom.equalTo(-25)
+            $0.bottom.equalTo(controlsStackView.snp.top).offset(-25)
         }
         
         flashButton.snp.makeConstraints {
             $0.trailing.equalTo(-17)
-            $0.bottom.equalTo(-25)
+            $0.bottom.equalTo(controlsStackView.snp.top).offset(-25)
         }
         
         controlsStackView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(11)
             $0.leading.equalToSuperview().offset(11)
             $0.trailing.equalToSuperview().offset(-11)
-            $0.bottom.lessThanOrEqualTo(controlsView).offset(-11)
+            $0.bottom.equalTo(safeAreaLayoutGuide).offset(-42)
         }
         
         photoVideoControl.snp.makeConstraints {

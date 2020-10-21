@@ -142,14 +142,13 @@ private extension AVAssetTrack {
         let layerInstruction = AVMutableVideoCompositionLayerInstruction(assetTrack: self)
         
         var finalTransform = preferredTransform
-        let assetInfo = orientationFromTransform()
         let scaleSize = scaledSize(for: cropRect.size)
         
-        /// - TODO:
-        let centerFactor = assetInfo.isPortrait ? (scaleSize.width - cropRect.size.height) / 2 : (scaleSize.height - cropRect.size.height) / 2
+        let yCenterFactor = (naturalSize.width - scaleSize.height) / 2
+        let xCenterFactor = (naturalSize.height - scaleSize.width) / 2
         
-        finalTransform.tx = finalTransform.tx - cropRect.origin.x
-        finalTransform.ty = finalTransform.ty - centerFactor
+        finalTransform.tx = finalTransform.tx - xCenterFactor
+        finalTransform.ty = finalTransform.ty - yCenterFactor
         
         layerInstruction.setTransform(finalTransform, at: .zero)
         instruction.layerInstructions = [layerInstruction]
