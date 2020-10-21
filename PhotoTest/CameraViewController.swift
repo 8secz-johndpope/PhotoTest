@@ -13,6 +13,7 @@ class CameraViewController: UIViewController {
 
     // MARK: - Private properties
     private weak var previewView: PreviewView!
+    private weak var previewSnapshot: UIView!
     private weak var activityIndicator: UIActivityIndicatorView!
     private weak var recordButton: UIButton!
     private weak var photoVideoControl: BetterSegmentedControl!
@@ -20,6 +21,8 @@ class CameraViewController: UIViewController {
     private weak var flashButton: UIButton!
     private weak var videoProgressView: UIProgressView!
     private weak var timerLabel: UILabel!
+    
+    private weak var snapshot: UIView?
     
     private var camera: XCCameraManager!
     private var timer: RecordingTimer!
@@ -35,6 +38,7 @@ class CameraViewController: UIViewController {
         self.view = view
         
         previewView = view.previewView
+        previewSnapshot = view.previewSnapshot
         activityIndicator = view.activityIndicator
         recordButton = view.recordButton
         photoVideoControl = view.photoVideoControl
@@ -75,7 +79,7 @@ class CameraViewController: UIViewController {
         camera = XCCameraManager { [unowned self] (camera) in
             let camera = camera as! XCCameraManager
             camera.photoPreset = .photo
-            camera.videoPreset = .high
+            camera.videoPreset = camera.preferredVideoPreset
             camera.flashMode = .off
             
             camera.previewView = self.previewView
@@ -129,19 +133,21 @@ class CameraViewController: UIViewController {
     
     // MARK: - Actions
     @objc private func photoVideoControlTapped(_ control: BetterSegmentedControl) {
+        videoProgressView.isHidden = (configuration == .photo)
         recordButton.isEnabled = false
+        showSnapshot()
         
         if configuration == .photo {
             camera.usePhotoConfiguration(removeVideoOutput: true) { [weak self] in
                 self?.recordButton.isEnabled = true
+                self?.hideSnapshot()
             }
         } else if configuration == .video {
             camera.useVideoConfiguration { [weak self] in
                 self?.recordButton.isEnabled = true
+                self?.hideSnapshot()
             }
         }
-        
-        videoProgressView.isHidden = (configuration == .photo)
     }
     
     @objc private func recordButtonTapped(_ sender: UIButton) {
@@ -169,6 +175,34 @@ class CameraViewController: UIViewController {
     
     @objc private func flashTapped() {
         
+    }
+    
+    // MARK: - Helpers
+    
+    private func showSnapshot() {
+        guard let snapshot = previewView.snapshotView(afterScreenUpdates: false) else { return }
+        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
+        
+        snapshot.alpha = 0
+        self.snapshot = snapshot
+        
+        self.snapshot?.addSubview(blurView)
+        view.insertSubview(self.snapshot!, at: 1)
+        
+        blurView.pinToEdges()
+        snapshot.pinToEdges()
+        
+        UIView.animate(withDuration: 0.2) {
+            snapshot.alpha = 1
+        }
+    }
+    
+    private func hideSnapshot() {
+        UIView.animate(withDuration: 0.2) {
+            self.snapshot?.alpha = 0
+        } completion: { (_) in
+            self.snapshot?.removeFromSuperview()
+        }
     }
     
 }
@@ -202,6 +236,16 @@ extension CameraViewController: XCRecordingCaptureDelegate {
     
     func recordingCaptureDidFinishWithError(_ error: Error) {
         showInfoAlert(error.localizedDescription)
+    }
+    
+}
+
+private extension UIView {
+    
+    func pinToEdges() {
+        snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
     
 }

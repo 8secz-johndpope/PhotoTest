@@ -60,10 +60,7 @@ final class XCRecordingCaptureProcessor: NSObject, AVCaptureFileOutputRecordingD
         let audioTrack = composition.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid)
         let adoptRect = cropRect.adoptForAVC()
         
-        let asset = AVAsset(url: urls.first)
-        let assetVideoTrack = asset?.tracks(withMediaType: .video).first
-        
-        videoComposition.renderSize = assetVideoTrack?.scaledSize(for: adoptRect.size) ?? adoptRect.size
+        videoComposition.renderSize = renderSize(for: urls.first, cropRect: adoptRect)
         videoComposition.frameDuration = CMTimeMake(value: 1, timescale: 25)
         
         var insetTime: CMTime = .zero
@@ -98,6 +95,14 @@ final class XCRecordingCaptureProcessor: NSObject, AVCaptureFileOutputRecordingD
                 completion(nil, error)
             }
         })
+    }
+    
+    private func renderSize(for assetURl: URL?, cropRect: CGRect) -> CGSize {
+        guard
+            let asset = AVAsset(url: assetURl),
+            let videoTrack = asset.tracks(withMediaType: .video).first else { return cropRect.size }
+        
+        return videoTrack.scaledSize(for: cropRect.size)
     }
     
     private func cleanupTmpURLs() {
@@ -202,6 +207,16 @@ private extension String {
         case .iFrame960x540: self = AVAssetExportPreset960x540
         default:             self = AVAssetExportPresetPassthrough
         }
+    }
+    
+}
+
+private extension CGSize {
+    
+    static func >(lhs: CGSize, rhs: CGSize) -> Bool {
+        let s1 = lhs.width * lhs.height
+        let s2 = rhs.width * rhs.height
+        return s1 > s2
     }
     
 }

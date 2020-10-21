@@ -12,6 +12,7 @@ import BetterSegmentedControl
 final class CameraView: UIView {
 
     var previewView: PreviewView!
+    var previewSnapshot: UIView!
     var activityIndicator: UIActivityIndicatorView!
     var recordButton: UIButton!
     var photoVideoControl: BetterSegmentedControl!
@@ -41,6 +42,12 @@ final class CameraView: UIView {
         previewView = {
             let i = PreviewView()
             i.videoPreviewLayer.videoGravity = .resizeAspectFill
+            return i
+        }()
+        
+        previewSnapshot = {
+            let i = UIView()
+            i.alpha = 0
             return i
         }()
         
@@ -121,6 +128,7 @@ final class CameraView: UIView {
         }()
         
         addSubview(previewView)
+        addSubview(previewSnapshot)
         addSubview(controlsStackView)
         
         previewView.addSubview(changeCameraButton)
@@ -145,6 +153,10 @@ final class CameraView: UIView {
         
         previewView.snp.makeConstraints {
             $0.edges.equalTo(safeAreaLayoutGuide)
+        }
+        
+        previewSnapshot.snp.makeConstraints {
+            $0.edges.equalTo(previewView)
         }
         
         activityIndicator.snp.makeConstraints {

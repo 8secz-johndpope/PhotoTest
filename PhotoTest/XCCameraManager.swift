@@ -24,6 +24,23 @@ final class XCCameraManager: BaseCameraManager {
         }
     }
     
+    var preferredVideoPreset: AVCaptureSession.Preset {
+        let frontDiscoverySession = AVCaptureDevice.DiscoverySession(
+            deviceTypes: [.builtInWideAngleCamera, .builtInDualCamera, .builtInTrueDepthCamera],
+            mediaType: .video,
+            position: .front
+        )
+        let fakeSession = AVCaptureSession()
+        
+        guard
+            let frontCamera = frontDiscoverySession.devices.first,
+            let videoDeviceInput = try? AVCaptureDeviceInput(device: frontCamera) else { return .hd1280x720 }
+        
+        fakeSession.addInput(videoDeviceInput)
+        
+        return fakeSession.preferredVideoPreset
+    }
+    
     // MARK: - Private properties
     private let audioSession = AVAudioSession.sharedInstance()
     
@@ -100,12 +117,10 @@ private extension XCCameraManager {
     }
     
     func changeCameraWhileRecodring(_ completion: ((Error?) -> Void)?) {
-        sessionQueue.async {
-            self.stopRecordingToChangeCamera()
-            super.changeCamera { (error) in
-                self.startRecording()
-                completion?(error)
-            }
+        self.stopRecordingToChangeCamera()
+        super.changeCamera { (error) in
+            self.startRecording()
+            completion?(error)
         }
     }
     
@@ -118,6 +133,30 @@ private extension XCCameraManager {
         }
         
         session.automaticallyConfiguresApplicationAudioSession = false
+    }
+    
+}
+
+private extension AVCaptureSession {
+    
+    var preferredVideoPreset: Preset {
+        if canSetSessionPreset(.hd4K3840x2160) {
+            return .hd4K3840x2160
+        }
+        
+        if canSetSessionPreset(.hd1920x1080) {
+            return .hd1920x1080
+        }
+        
+        if canSetSessionPreset(.hd1280x720) {
+            return .hd1280x720
+        }
+        
+        if canSetSessionPreset(.vga640x480) {
+            return .vga640x480
+        }
+        
+        return .cif352x288
     }
     
 }

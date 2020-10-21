@@ -442,7 +442,9 @@ class BaseCameraManager: NSObject {
                 }
             }
             
-            completion?(error)
+            DispatchQueue.main.async {
+                completion?(error)
+            }
         }
     }
     
