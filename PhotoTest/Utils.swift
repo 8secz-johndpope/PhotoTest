@@ -112,3 +112,15 @@ extension CGImagePropertyOrientation {
     }
     
 }
+
+extension AVAsset {
+    
+    convenience init?(url: URL?) {
+        if let url = url {
+            self.init(url: url)
+        } else {
+            return nil
+        }
+    }
+    
+}

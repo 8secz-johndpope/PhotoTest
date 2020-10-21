@@ -60,7 +60,10 @@ final class XCRecordingCaptureProcessor: NSObject, AVCaptureFileOutputRecordingD
         let audioTrack = composition.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid)
         let adoptRect = cropRect.adoptForAVC()
         
-        videoComposition.renderSize = adoptRect.size
+        let asset = AVAsset(url: urls.first)
+        let assetVideoTrack = asset?.tracks(withMediaType: .video).first
+        
+        videoComposition.renderSize = assetVideoTrack?.renderSize(for: adoptRect.size) ?? adoptRect.size
         videoComposition.frameDuration = CMTimeMake(value: 1, timescale: 25)
         
         var insetTime: CMTime = .zero
@@ -137,30 +140,39 @@ private extension String {
 
 extension AVAssetTrack {
     
-    func compositionInstructionForOrientation(for timeRange: CMTimeRange, cropRect: CGRect) -> AVMutableVideoCompositionInstruction {
+    func renderSize(for cropSize: CGSize) -> CGSize {
         let assetInfo = orientationFromTransform()
         
-        var scaleToFitRatio = UIScreen.main.bounds.width / naturalSize.width
+        var scaleToFitRatio = naturalSize.width / cropSize.width
         if assetInfo.isPortrait {
-            scaleToFitRatio = UIScreen.main.bounds.width / naturalSize.height
+            scaleToFitRatio = naturalSize.height / cropSize.height
         }
-        let scaleTransform = CGAffineTransform(scaleX: scaleToFitRatio, y: scaleToFitRatio)
-        let scaleSize = CGSize(width: naturalSize.width * scaleToFitRatio, height: naturalSize.height * scaleToFitRatio)
         
+        let scaleSize = CGSize(width: cropSize.width * scaleToFitRatio, height: cropSize.height * scaleToFitRatio)
+        return scaleSize
+    }
+    
+    func compositionInstructionForOrientation(for timeRange: CMTimeRange, cropRect: CGRect) -> AVMutableVideoCompositionInstruction {
         let instruction = AVMutableVideoCompositionInstruction()
         instruction.timeRange = timeRange
         
         let layerInstruction = AVMutableVideoCompositionLayerInstruction(assetTrack: self)
         
-        var orientationTransform = preferredTransform
+        var finalTransform = preferredTransform
+        let assetInfo = orientationFromTransform()
+        
+        var scaleToFitRatio = naturalSize.width / cropRect.width
+        if assetInfo.isPortrait {
+            scaleToFitRatio = naturalSize.width / cropRect.height
+        }
+//        let scaleTransform = CGAffineTransform(scaleX: scaleToFitRatio, y: scaleToFitRatio)
+        let scaleSize = CGSize(width: cropRect.width * scaleToFitRatio, height: cropRect.height * scaleToFitRatio)
         
         /// - TODO:
         let centerFactor = assetInfo.isPortrait ? (scaleSize.width - cropRect.size.height) / 2 : (scaleSize.height - cropRect.size.height) / 2
         
-        orientationTransform.tx = orientationTransform.tx * scaleToFitRatio - cropRect.origin.x
-        orientationTransform.ty = orientationTransform.ty * scaleToFitRatio - centerFactor
-        
-        let finalTransform = scaleTransform.concatenating(orientationTransform)
+//        finalTransform.tx = finalTransform.tx - cropRect.origin.x
+//        finalTransform.ty = finalTransform.ty - centerFactor
         
         layerInstruction.setTransform(finalTransform, at: .zero)
         instruction.layerInstructions = [layerInstruction]
