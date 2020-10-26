@@ -30,15 +30,15 @@ final class XCCameraManager: BaseCameraManager {
             mediaType: .video,
             position: .front
         )
-        let fakeSession = AVCaptureSession()
+        let tmpSession = AVCaptureSession()
         
         guard
             let frontCamera = frontDiscoverySession.devices.first,
             let videoDeviceInput = try? AVCaptureDeviceInput(device: frontCamera) else { return .hd1280x720 }
         
-        fakeSession.addInput(videoDeviceInput)
+        tmpSession.addInput(videoDeviceInput)
         
-        return fakeSession.preferredVideoPreset
+        return tmpSession.preferredVideoPreset
     }
     
     // MARK: - Private properties

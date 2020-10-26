@@ -23,6 +23,9 @@ class CameraViewController: UIViewController {
     private weak var timerLabel: UILabel!
     
     private weak var snapshot: UIView?
+    private weak var controls: ControlsView?
+    
+    private var controlsWorkItem: DispatchWorkItem?
     
     private var camera: XCCameraManager!
     private var timer: RecordingTimer!
@@ -69,6 +72,14 @@ class CameraViewController: UIViewController {
     
     // MARK: - Private methods
     private func configureViews() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(previewTapped(_:)))
+        previewView.addGestureRecognizer(tapGesture)
+        
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(previewPanned(_:)))
+        previewView.addGestureRecognizer(panGesture)
+        
+        tapGesture.require(toFail: panGesture)
+        
         photoVideoControl.addTarget(self, action: #selector(photoVideoControlTapped(_:)), for: .valueChanged)
         recordButton.addTarget(self, action: #selector(recordButtonTapped(_:)), for: .touchUpInside)
         changeCameraButton.addTarget(self, action: #selector(changeCameraTapped), for: .touchUpInside)
@@ -177,8 +188,36 @@ class CameraViewController: UIViewController {
         
     }
     
-    // MARK: - Helpers
+    @objc private func previewTapped(_ recognizer: UITapGestureRecognizer) {
+        let touchPoint = recognizer.location(in: view)
+        
+        invalidateControlsWorkitem()
+        hideControls()
+        showControls(at: touchPoint)
+        startControlsWorkitem()
+    }
     
+    @objc private func previewPanned(_ recognizer: UIPanGestureRecognizer) {
+        guard let controls = controls else { return }
+        switch recognizer.state {
+        case .began:
+            invalidateControlsWorkitem()
+        
+        case .changed:
+            let yTranslation = recognizer.translation(in: view).y
+            let translationFactor = yTranslation / view.frame.height
+            controls.setExposureY(factor: translationFactor)
+            print(camera.maxExposure, camera.minExposure)
+            print(translationFactor)
+        case .ended:
+            startControlsWorkitem()
+            
+        default:
+            break
+        }
+    }
+    
+    // MARK: - Helpers
     private func showSnapshot() {
         guard let snapshot = previewView.snapshotView(afterScreenUpdates: false) else { return }
         let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
@@ -203,6 +242,38 @@ class CameraViewController: UIViewController {
         } completion: { (_) in
             self.snapshot?.removeFromSuperview()
         }
+    }
+    
+    private func showControls(at point: CGPoint) {
+        let cntrls: ControlsView = {
+            let i = ControlsView(frame: .zero)
+            i.frame.size = i.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+            i.center = point
+            i.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+            return i
+        }()
+        controls = cntrls
+        
+        view.addSubview(controls!)
+        
+        UIView.animate(withDuration: 0.2) {
+            self.controls?.transform = .identity
+        }
+    }
+    
+    private func hideControls() {
+        controls?.removeFromSuperview()
+        controls = nil
+    }
+    
+    private func invalidateControlsWorkitem() {
+        controlsWorkItem?.cancel()
+        controlsWorkItem = nil
+    }
+    
+    private func startControlsWorkitem() {
+        controlsWorkItem = DispatchWorkItem { [weak self] in self?.hideControls() }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: controlsWorkItem!)
     }
     
 }

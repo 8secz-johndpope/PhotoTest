@@ -30,6 +30,10 @@
 		4EB44DA7253441C000ABE55C /* UIViewController+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB44DA6253441C000ABE55C /* UIViewController+extension.swift */; };
 		4EB44DBB25349D3900ABE55C /* XCPhotoCaptureProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB44DBA25349D3800ABE55C /* XCPhotoCaptureProcessor.swift */; };
 		4ED534CF253EC93800847ADD /* XCCameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED534CE253EC93800847ADD /* XCCameraManager.swift */; };
+		4ED7DEB725415F6A0077F3C2 /* FocusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED7DEB625415F6A0077F3C2 /* FocusView.swift */; };
+		4ED7DEBA254161C30077F3C2 /* ExposureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED7DEB9254161C30077F3C2 /* ExposureView.swift */; };
+		4ED7DEBD254164F90077F3C2 /* ControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED7DEBC254164F90077F3C2 /* ControlsView.swift */; };
+		4ED7DF3A254197920077F3C2 /* ExposureLightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED7DF39254197920077F3C2 /* ExposureLightView.swift */; };
 		8637E5232F361680E826D748 /* Pods_PhotoTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E20AACB81F8A380C5B03A84E /* Pods_PhotoTest.framework */; };
 /* End PBXBuildFile section */
 
@@ -59,6 +63,10 @@
 		4EB44DA6253441C000ABE55C /* UIViewController+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+extension.swift"; sourceTree = "<group>"; };
 		4EB44DBA25349D3800ABE55C /* XCPhotoCaptureProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCPhotoCaptureProcessor.swift; sourceTree = "<group>"; };
 		4ED534CE253EC93800847ADD /* XCCameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCCameraManager.swift; sourceTree = "<group>"; };
+		4ED7DEB625415F6A0077F3C2 /* FocusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusView.swift; sourceTree = "<group>"; };
+		4ED7DEB9254161C30077F3C2 /* ExposureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExposureView.swift; sourceTree = "<group>"; };
+		4ED7DEBC254164F90077F3C2 /* ControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlsView.swift; sourceTree = "<group>"; };
+		4ED7DF39254197920077F3C2 /* ExposureLightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExposureLightView.swift; sourceTree = "<group>"; };
 		9AD9458A55AE2AB970F7D4A6 /* Pods-PhotoTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoTest.release.xcconfig"; path = "Target Support Files/Pods-PhotoTest/Pods-PhotoTest.release.xcconfig"; sourceTree = "<group>"; };
 		A570EBFD4F54B2E5CA7D2656 /* Pods-PhotoTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoTest.debug.xcconfig"; path = "Target Support Files/Pods-PhotoTest/Pods-PhotoTest.debug.xcconfig"; sourceTree = "<group>"; };
 		E20AACB81F8A380C5B03A84E /* Pods_PhotoTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PhotoTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -127,6 +135,10 @@
 				4EAD48A3253D81C40001242C /* CameraView.swift */,
 				4E06AFFF25308B45000EA83A /* BaseCameraManager.swift */,
 				4ED534CE253EC93800847ADD /* XCCameraManager.swift */,
+				4ED7DEB625415F6A0077F3C2 /* FocusView.swift */,
+				4ED7DEB9254161C30077F3C2 /* ExposureView.swift */,
+				4ED7DF39254197920077F3C2 /* ExposureLightView.swift */,
+				4ED7DEBC254164F90077F3C2 /* ControlsView.swift */,
 				4EB143B62535838300F2FB80 /* XCRecordingCaptureProcessor.swift */,
 				4EB143BD25359A2300F2FB80 /* XCRecordingCaptureDelegate.swift */,
 				4EB44DBA25349D3800ABE55C /* XCPhotoCaptureProcessor.swift */,
@@ -256,6 +268,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4ED7DEBD254164F90077F3C2 /* ControlsView.swift in Sources */,
 				4EA76A212536F60900E174D1 /* ShortTapGestureRecognizer.swift in Sources */,
 				4EA76A272536FB1300E174D1 /* GalleryCollectionViewCell.swift in Sources */,
 				4EB44DA7253441C000ABE55C /* UIViewController+extension.swift in Sources */,
@@ -264,18 +277,21 @@
 				4E8924A7252DB0AB00706D21 /* ViewController.swift in Sources */,
 				4EAD48BA253DA8390001242C /* VideoTimer.swift in Sources */,
 				4EB143C12535AA2200F2FB80 /* RecordGestureRecognizer.swift in Sources */,
+				4ED7DEB725415F6A0077F3C2 /* FocusView.swift in Sources */,
 				4E06B00B2530A0D2000EA83A /* Utils.swift in Sources */,
 				4EB143BE25359A2300F2FB80 /* XCRecordingCaptureDelegate.swift in Sources */,
 				4E8924B8252DB1DB00706D21 /* ImagePicker.swift in Sources */,
 				4EB143BA253599E900F2FB80 /* XCPhotoCaptureDelegate.swift in Sources */,
 				4EB44DBB25349D3900ABE55C /* XCPhotoCaptureProcessor.swift in Sources */,
 				4EAD48A4253D81C40001242C /* CameraView.swift in Sources */,
+				4ED7DF3A254197920077F3C2 /* ExposureLightView.swift in Sources */,
 				4EB143B72535838300F2FB80 /* XCRecordingCaptureProcessor.swift in Sources */,
 				4ED534CF253EC93800847ADD /* XCCameraManager.swift in Sources */,
 				4EA76A242536FA0A00E174D1 /* GalleryViewController.swift in Sources */,
 				4E8924A3252DB0AB00706D21 /* AppDelegate.swift in Sources */,
 				4E8924C0252DC19B00706D21 /* Camera2ViewController.swift in Sources */,
 				4EAD48AF253D8BD50001242C /* CameraViewController.swift in Sources */,
+				4ED7DEBA254161C30077F3C2 /* ExposureView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
