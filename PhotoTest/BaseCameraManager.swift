@@ -59,6 +59,14 @@ class BaseCameraManager: NSObject {
         self.videoDeviceInput.device.isFlashAvailable
     }
     
+    var maxExposure: Float {
+        videoDeviceInput.device.maxExposureTargetBias
+    }
+    
+    var minExposure: Float {
+        videoDeviceInput.device.minExposureTargetBias
+    }
+    
     var setupResult: SessionSetupResult = .success
     
     weak var previewView: PreviewView! {
