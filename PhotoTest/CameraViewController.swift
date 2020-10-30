@@ -109,14 +109,14 @@ class CameraViewController: UIViewController {
                 // TODO:
             })
         
-        camera.checkAuthorizationStatus { [weak self] (status) in
-            switch status {
-            case .notDetermined:
-                self?.camera.requestAccess(nil)
-            default:
-                break
-            }
-        }
+//        camera.checkAuthorizationStatus { [weak self] (status) in
+//            switch status {
+//            case .notDetermined:
+//                self?.camera.requestAccess(nil)
+//            default:
+//                break
+//            }
+//        }
     }
     
     private func handleCameraError(_ error: BaseCameraManager.CameraError) {

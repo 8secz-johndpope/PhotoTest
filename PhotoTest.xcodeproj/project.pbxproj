@@ -9,6 +9,36 @@
 /* Begin PBXBuildFile section */
 		4E06B00025308B45000EA83A /* BaseCameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E06AFFF25308B45000EA83A /* BaseCameraManager.swift */; };
 		4E06B00B2530A0D2000EA83A /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E06B00A2530A0D2000EA83A /* Utils.swift */; };
+		4E07DBFC254C5626008637FA /* ThumbSelectionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07DBD8254C5626008637FA /* ThumbSelectionControl.swift */; };
+		4E07DBFD254C5626008637FA /* ThumbSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07DBD9254C5626008637FA /* ThumbSelectionView.swift */; };
+		4E07DBFE254C5626008637FA /* CSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07DBDA254C5626008637FA /* CSelectionView.swift */; };
+		4E07DBFF254C5626008637FA /* CoverSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07DBDB254C5626008637FA /* CoverSelectionViewModel.swift */; };
+		4E07DC00254C5626008637FA /* CoverSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07DBDC254C5626008637FA /* CoverSelectionViewController.swift */; };
+		4E07DC01254C5626008637FA /* CoverSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07DBDD254C5626008637FA /* CoverSelectionView.swift */; };
+		4E07DC02254C5626008637FA /* CoverSelectionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07DBDE254C5626008637FA /* CoverSelectionFactory.swift */; };
+		4E07DC03254C5626008637FA /* TrimmingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07DBE0254C5626008637FA /* TrimmingViewController.swift */; };
+		4E07DC04254C5626008637FA /* HandlerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07DBE2254C5626008637FA /* HandlerView.swift */; };
+		4E07DC05254C5626008637FA /* TrimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07DBE3254C5626008637FA /* TrimmerView.swift */; };
+		4E07DC06254C5626008637FA /* TrimmerControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07DBE4254C5626008637FA /* TrimmerControl.swift */; };
+		4E07DC07254C5626008637FA /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07DBE5254C5626008637FA /* PlayerView.swift */; };
+		4E07DC08254C5626008637FA /* ThumbnailScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07DBE6254C5626008637FA /* ThumbnailScrollView.swift */; };
+		4E07DC09254C5626008637FA /* ThumbnailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07DBE7254C5626008637FA /* ThumbnailView.swift */; };
+		4E07DC0A254C5626008637FA /* TrimmingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07DBE8254C5626008637FA /* TrimmingViewModel.swift */; };
+		4E07DC0B254C5626008637FA /* TrimmingFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07DBE9254C5626008637FA /* TrimmingFactory.swift */; };
+		4E07DC0C254C5626008637FA /* TrimmingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07DBEA254C5626008637FA /* TrimmingView.swift */; };
+		4E07DC0D254C5626008637FA /* CameraFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07DBEC254C5626008637FA /* CameraFactory.swift */; };
+		4E07DC0E254C5626008637FA /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07DBED254C5626008637FA /* CameraViewModel.swift */; };
+		4E07DC0F254C5626008637FA /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07DBEE254C5626008637FA /* CameraViewController.swift */; };
+		4E07DC10254C5626008637FA /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07DBEF254C5626008637FA /* CameraView.swift */; };
+		4E07DC11254C5626008637FA /* LightMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07DBF1254C5626008637FA /* LightMode.swift */; };
+		4E07DC12254C5626008637FA /* VideoTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07DBF2254C5626008637FA /* VideoTimer.swift */; };
+		4E07DC13254C5626008637FA /* CameraOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07DBF3254C5626008637FA /* CameraOptions.swift */; };
+		4E07DC14254C5626008637FA /* YSPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07DBF5254C5626008637FA /* YSPhoto.swift */; };
+		4E07DC15254C5626008637FA /* YSVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07DBF6254C5626008637FA /* YSVideo.swift */; };
+		4E07DC16254C5626008637FA /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07DBF7254C5626008637FA /* TestViewController.swift */; };
+		4E07DC17254C5626008637FA /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07DBF9254C5626008637FA /* Utils.swift */; };
+		4E07DC18254C5626008637FA /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07DBFA254C5626008637FA /* CameraManager.swift */; };
+		4E07DC19254C5626008637FA /* CameraCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07DBFB254C5626008637FA /* CameraCoordinator.swift */; };
 		4E8924A3252DB0AB00706D21 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8924A2252DB0AB00706D21 /* AppDelegate.swift */; };
 		4E8924A7252DB0AB00706D21 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8924A6252DB0AB00706D21 /* ViewController.swift */; };
 		4E8924AA252DB0AB00706D21 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E8924A8252DB0AB00706D21 /* Main.storyboard */; };
@@ -40,6 +70,36 @@
 /* Begin PBXFileReference section */
 		4E06AFFF25308B45000EA83A /* BaseCameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCameraManager.swift; sourceTree = "<group>"; };
 		4E06B00A2530A0D2000EA83A /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		4E07DBD8254C5626008637FA /* ThumbSelectionControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbSelectionControl.swift; sourceTree = "<group>"; };
+		4E07DBD9254C5626008637FA /* ThumbSelectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbSelectionView.swift; sourceTree = "<group>"; };
+		4E07DBDA254C5626008637FA /* CSelectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CSelectionView.swift; sourceTree = "<group>"; };
+		4E07DBDB254C5626008637FA /* CoverSelectionViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoverSelectionViewModel.swift; sourceTree = "<group>"; };
+		4E07DBDC254C5626008637FA /* CoverSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoverSelectionViewController.swift; sourceTree = "<group>"; };
+		4E07DBDD254C5626008637FA /* CoverSelectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoverSelectionView.swift; sourceTree = "<group>"; };
+		4E07DBDE254C5626008637FA /* CoverSelectionFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoverSelectionFactory.swift; sourceTree = "<group>"; };
+		4E07DBE0254C5626008637FA /* TrimmingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrimmingViewController.swift; sourceTree = "<group>"; };
+		4E07DBE2254C5626008637FA /* HandlerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandlerView.swift; sourceTree = "<group>"; };
+		4E07DBE3254C5626008637FA /* TrimmerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrimmerView.swift; sourceTree = "<group>"; };
+		4E07DBE4254C5626008637FA /* TrimmerControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrimmerControl.swift; sourceTree = "<group>"; };
+		4E07DBE5254C5626008637FA /* PlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
+		4E07DBE6254C5626008637FA /* ThumbnailScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbnailScrollView.swift; sourceTree = "<group>"; };
+		4E07DBE7254C5626008637FA /* ThumbnailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbnailView.swift; sourceTree = "<group>"; };
+		4E07DBE8254C5626008637FA /* TrimmingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrimmingViewModel.swift; sourceTree = "<group>"; };
+		4E07DBE9254C5626008637FA /* TrimmingFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrimmingFactory.swift; sourceTree = "<group>"; };
+		4E07DBEA254C5626008637FA /* TrimmingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrimmingView.swift; sourceTree = "<group>"; };
+		4E07DBEC254C5626008637FA /* CameraFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraFactory.swift; sourceTree = "<group>"; };
+		4E07DBED254C5626008637FA /* CameraViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewModel.swift; sourceTree = "<group>"; };
+		4E07DBEE254C5626008637FA /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
+		4E07DBEF254C5626008637FA /* CameraView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		4E07DBF1254C5626008637FA /* LightMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LightMode.swift; sourceTree = "<group>"; };
+		4E07DBF2254C5626008637FA /* VideoTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoTimer.swift; sourceTree = "<group>"; };
+		4E07DBF3254C5626008637FA /* CameraOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraOptions.swift; sourceTree = "<group>"; };
+		4E07DBF5254C5626008637FA /* YSPhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YSPhoto.swift; sourceTree = "<group>"; };
+		4E07DBF6254C5626008637FA /* YSVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YSVideo.swift; sourceTree = "<group>"; };
+		4E07DBF7254C5626008637FA /* TestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
+		4E07DBF9254C5626008637FA /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		4E07DBFA254C5626008637FA /* CameraManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
+		4E07DBFB254C5626008637FA /* CameraCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraCoordinator.swift; sourceTree = "<group>"; };
 		4E89249F252DB0AB00706D21 /* PhotoTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E8924A2252DB0AB00706D21 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4E8924A6252DB0AB00706D21 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -101,6 +161,107 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		4E07DBD5254C5626008637FA /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				4E07DBD6254C5626008637FA /* CoverSelection */,
+				4E07DBDF254C5626008637FA /* Trimming */,
+				4E07DBEB254C5626008637FA /* Camera */,
+				4E07DBF4254C5626008637FA /* Models */,
+				4E07DBF7254C5626008637FA /* TestViewController.swift */,
+				4E07DBF8254C5626008637FA /* Common */,
+				4E07DBFB254C5626008637FA /* CameraCoordinator.swift */,
+			);
+			path = Camera;
+			sourceTree = "<group>";
+		};
+		4E07DBD6254C5626008637FA /* CoverSelection */ = {
+			isa = PBXGroup;
+			children = (
+				4E07DBD7254C5626008637FA /* Module */,
+				4E07DBDB254C5626008637FA /* CoverSelectionViewModel.swift */,
+				4E07DBDC254C5626008637FA /* CoverSelectionViewController.swift */,
+				4E07DBDD254C5626008637FA /* CoverSelectionView.swift */,
+				4E07DBDE254C5626008637FA /* CoverSelectionFactory.swift */,
+			);
+			path = CoverSelection;
+			sourceTree = "<group>";
+		};
+		4E07DBD7254C5626008637FA /* Module */ = {
+			isa = PBXGroup;
+			children = (
+				4E07DBD8254C5626008637FA /* ThumbSelectionControl.swift */,
+				4E07DBD9254C5626008637FA /* ThumbSelectionView.swift */,
+				4E07DBDA254C5626008637FA /* CSelectionView.swift */,
+			);
+			path = Module;
+			sourceTree = "<group>";
+		};
+		4E07DBDF254C5626008637FA /* Trimming */ = {
+			isa = PBXGroup;
+			children = (
+				4E07DBE0254C5626008637FA /* TrimmingViewController.swift */,
+				4E07DBE1254C5626008637FA /* Module */,
+				4E07DBE8254C5626008637FA /* TrimmingViewModel.swift */,
+				4E07DBE9254C5626008637FA /* TrimmingFactory.swift */,
+				4E07DBEA254C5626008637FA /* TrimmingView.swift */,
+			);
+			path = Trimming;
+			sourceTree = "<group>";
+		};
+		4E07DBE1254C5626008637FA /* Module */ = {
+			isa = PBXGroup;
+			children = (
+				4E07DBE2254C5626008637FA /* HandlerView.swift */,
+				4E07DBE3254C5626008637FA /* TrimmerView.swift */,
+				4E07DBE4254C5626008637FA /* TrimmerControl.swift */,
+				4E07DBE5254C5626008637FA /* PlayerView.swift */,
+				4E07DBE6254C5626008637FA /* ThumbnailScrollView.swift */,
+				4E07DBE7254C5626008637FA /* ThumbnailView.swift */,
+			);
+			path = Module;
+			sourceTree = "<group>";
+		};
+		4E07DBEB254C5626008637FA /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				4E07DBEC254C5626008637FA /* CameraFactory.swift */,
+				4E07DBED254C5626008637FA /* CameraViewModel.swift */,
+				4E07DBEE254C5626008637FA /* CameraViewController.swift */,
+				4E07DBEF254C5626008637FA /* CameraView.swift */,
+				4E07DBF0254C5626008637FA /* CameraModule */,
+			);
+			path = Camera;
+			sourceTree = "<group>";
+		};
+		4E07DBF0254C5626008637FA /* CameraModule */ = {
+			isa = PBXGroup;
+			children = (
+				4E07DBF1254C5626008637FA /* LightMode.swift */,
+				4E07DBF2254C5626008637FA /* VideoTimer.swift */,
+				4E07DBF3254C5626008637FA /* CameraOptions.swift */,
+			);
+			path = CameraModule;
+			sourceTree = "<group>";
+		};
+		4E07DBF4254C5626008637FA /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				4E07DBF5254C5626008637FA /* YSPhoto.swift */,
+				4E07DBF6254C5626008637FA /* YSVideo.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		4E07DBF8254C5626008637FA /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				4E07DBF9254C5626008637FA /* Utils.swift */,
+				4E07DBFA254C5626008637FA /* CameraManager.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
 		4E892496252DB0AB00706D21 = {
 			isa = PBXGroup;
 			children = (
@@ -146,6 +307,7 @@
 				4E06B00A2530A0D2000EA83A /* Utils.swift */,
 				4E8924BC252DC17800706D21 /* PreviewView.swift */,
 				4E8924B7252DB1DB00706D21 /* ImagePicker.swift */,
+				4E07DBD5254C5626008637FA /* Camera */,
 				4E8924A8252DB0AB00706D21 /* Main.storyboard */,
 				4E8924AB252DB0AD00706D21 /* Assets.xcassets */,
 				4E8924AD252DB0AD00706D21 /* LaunchScreen.storyboard */,
@@ -269,13 +431,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				4ED7DEBD254164F90077F3C2 /* ControlsView.swift in Sources */,
+				4E07DC19254C5626008637FA /* CameraCoordinator.swift in Sources */,
 				4EA76A212536F60900E174D1 /* ShortTapGestureRecognizer.swift in Sources */,
 				4EA76A272536FB1300E174D1 /* GalleryCollectionViewCell.swift in Sources */,
+				4E07DC10254C5626008637FA /* CameraView.swift in Sources */,
+				4E07DC08254C5626008637FA /* ThumbnailScrollView.swift in Sources */,
+				4E07DC04254C5626008637FA /* HandlerView.swift in Sources */,
+				4E07DC0D254C5626008637FA /* CameraFactory.swift in Sources */,
 				4EB44DA7253441C000ABE55C /* UIViewController+extension.swift in Sources */,
+				4E07DBFE254C5626008637FA /* CSelectionView.swift in Sources */,
+				4E07DC01254C5626008637FA /* CoverSelectionView.swift in Sources */,
 				4E8924BD252DC17800706D21 /* PreviewView.swift in Sources */,
+				4E07DC0C254C5626008637FA /* TrimmingView.swift in Sources */,
+				4E07DC09254C5626008637FA /* ThumbnailView.swift in Sources */,
 				4E06B00025308B45000EA83A /* BaseCameraManager.swift in Sources */,
+				4E07DC02254C5626008637FA /* CoverSelectionFactory.swift in Sources */,
 				4E8924A7252DB0AB00706D21 /* ViewController.swift in Sources */,
 				4EAD48BA253DA8390001242C /* VideoTimer.swift in Sources */,
+				4E07DC15254C5626008637FA /* YSVideo.swift in Sources */,
+				4E07DBFF254C5626008637FA /* CoverSelectionViewModel.swift in Sources */,
+				4E07DC16254C5626008637FA /* TestViewController.swift in Sources */,
+				4E07DC0B254C5626008637FA /* TrimmingFactory.swift in Sources */,
 				4EB143C12535AA2200F2FB80 /* RecordGestureRecognizer.swift in Sources */,
 				4ED7DEB725415F6A0077F3C2 /* FocusView.swift in Sources */,
 				4E06B00B2530A0D2000EA83A /* Utils.swift in Sources */,
@@ -284,14 +460,30 @@
 				4EB143BA253599E900F2FB80 /* XCPhotoCaptureDelegate.swift in Sources */,
 				4EB44DBB25349D3900ABE55C /* XCPhotoCaptureProcessor.swift in Sources */,
 				4EAD48A4253D81C40001242C /* CameraView.swift in Sources */,
+				4E07DC14254C5626008637FA /* YSPhoto.swift in Sources */,
+				4E07DC11254C5626008637FA /* LightMode.swift in Sources */,
+				4E07DC17254C5626008637FA /* Utils.swift in Sources */,
+				4E07DC0E254C5626008637FA /* CameraViewModel.swift in Sources */,
 				4ED7DF3A254197920077F3C2 /* ExposureLightView.swift in Sources */,
 				4EB143B72535838300F2FB80 /* XCRecordingCaptureProcessor.swift in Sources */,
+				4E07DC18254C5626008637FA /* CameraManager.swift in Sources */,
+				4E07DC00254C5626008637FA /* CoverSelectionViewController.swift in Sources */,
+				4E07DBFD254C5626008637FA /* ThumbSelectionView.swift in Sources */,
+				4E07DBFC254C5626008637FA /* ThumbSelectionControl.swift in Sources */,
 				4ED534CF253EC93800847ADD /* XCCameraManager.swift in Sources */,
+				4E07DC13254C5626008637FA /* CameraOptions.swift in Sources */,
+				4E07DC0F254C5626008637FA /* CameraViewController.swift in Sources */,
+				4E07DC07254C5626008637FA /* PlayerView.swift in Sources */,
+				4E07DC06254C5626008637FA /* TrimmerControl.swift in Sources */,
 				4EA76A242536FA0A00E174D1 /* GalleryViewController.swift in Sources */,
 				4E8924A3252DB0AB00706D21 /* AppDelegate.swift in Sources */,
 				4E8924C0252DC19B00706D21 /* Camera2ViewController.swift in Sources */,
+				4E07DC03254C5626008637FA /* TrimmingViewController.swift in Sources */,
+				4E07DC12254C5626008637FA /* VideoTimer.swift in Sources */,
 				4EAD48AF253D8BD50001242C /* CameraViewController.swift in Sources */,
 				4ED7DEBA254161C30077F3C2 /* ExposureView.swift in Sources */,
+				4E07DC05254C5626008637FA /* TrimmerView.swift in Sources */,
+				4E07DC0A254C5626008637FA /* TrimmingViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -439,8 +631,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = C2288R6Q4B;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 5HT442372Z;
 				INFOPLIST_FILE = PhotoTest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -449,6 +642,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = igorsorokin.PhotoTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "wild-dev-Zart";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -460,8 +654,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = C2288R6Q4B;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 5HT442372Z;
 				INFOPLIST_FILE = PhotoTest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -470,6 +665,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = igorsorokin.PhotoTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "wild-dev-Zart";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

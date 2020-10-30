@@ -43,14 +43,14 @@ class Camera2ViewController: UIViewController {
         recordButton.addGestureRecognizer(recordGR)
         recordButton.addGestureRecognizer(tapGR)
         
-        camera.checkAuthorizationStatus { [weak self] (status) in
-            switch status {
-            case .notDetermined:
-                self?.camera.requestAccess(nil)
-            default:
-                break
-            }
-        }
+//        camera.checkAuthorizationStatus { [weak self] (status) in
+//            switch status {
+//            case .notDetermined:
+//                self?.camera.requestAccess(nil)
+//            default:
+//                break
+//            }
+//        }
     }
     
     override func viewDidAppear(_ animated: Bool) {

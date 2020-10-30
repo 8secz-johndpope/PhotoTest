@@ -9,7 +9,7 @@ import AVFoundation
 import Photos
 import UIKit
 
-protocol BaseCameraManagerDelegate: class {
+protocol CameraManagerDelegate: class {
     func baseCameraManagerDidChangeRunningStatus(isRunning: Bool)
     func baseCameraManagerIsSucceededResumingSession(_ isSucceeded: Bool)
     
@@ -20,13 +20,13 @@ protocol BaseCameraManagerDelegate: class {
     func baseCameraManagerSessionRuntimeError(_ error: AVError)
 }
 
-class BaseCameraManager: NSObject {
+class CameraManager: NSObject {
     
     // MARK: - Helpers Types
     enum SessionSetupResult {
         case success
         case notAuthorized
-        case configurationFailed(CameraError)
+        case configurationFailed
         
         var isSuccess: Bool {
             switch self {
@@ -34,11 +34,6 @@ class BaseCameraManager: NSObject {
             default: return false
             }
         }
-    }
-    
-    enum CameraError: Error, LocalizedError {
-        case unavailable
-        case videoInput
     }
     
     enum Configuration: Int {
@@ -67,6 +62,10 @@ class BaseCameraManager: NSObject {
         videoDeviceInput.device.minExposureTargetBias
     }
     
+    var videoDevice: AVCaptureDevice {
+        videoDeviceInput.device
+    }
+    
     var setupResult: SessionSetupResult = .success
     
     weak var previewView: PreviewView! {
@@ -75,7 +74,7 @@ class BaseCameraManager: NSObject {
         }
     }
     
-    weak var cameraDelegate: BaseCameraManagerDelegate?
+    weak var cameraDelegate: CameraManagerDelegate?
     
     // MARK: Modes
     // Modes values override in `configureSession`,
@@ -107,29 +106,33 @@ class BaseCameraManager: NSObject {
         }
     }
     
-    // Used for photo capture, for video use `setTorchMode(_:)`
-    // Depends on `isFlashAvailable`
     var flashMode: AVCaptureDevice.FlashMode = .auto
+    var videoCodec: AVVideoCodecType = .hevc
+    var photoCodec: AVVideoCodecType = .hevc
+    var livePhotoCodec: AVVideoCodecType = .hevc
+    var livePhotoFileFormat: VideoFileType = .mp4
+    var videoFileFormat: VideoFileType = .mp4
+    
+    /// - Tag: set this property in `init(configurator: (CameraManager) -> Void)`
     var photoPreset: AVCaptureSession.Preset = .photo
     var videoPreset: AVCaptureSession.Preset = .high
     
     var currentConfiguration: Configuration = .photo
     
-    // MARK: - Proxy Delegates Factory
-    var photoCaptureProcessor: AVCapturePhotoCaptureDelegate?
-    var recordingCaptureProcessor: AVCaptureFileOutputRecordingDelegate?
+    // MARK: - Proxy Delegates
+    weak var photoCaptureProcessor: AVCapturePhotoCaptureDelegate?
+    weak var recordingCaptureProcessor: AVCaptureFileOutputRecordingDelegate?
     
     // MARK: Outputs
     let photoOutput: AVCapturePhotoOutput = .init()
     var movieFileOutput: AVCaptureMovieFileOutput?
-    var frontMovieOutput: AVCaptureMovieFileOutput?
+    
+    // For subclass usage
+    let session: AVCaptureSession = .init()
+    let sessionQueue: DispatchQueue = .init(label: "spider.ru.camera")
     
     // MARK: Inputs
     @objc dynamic private var videoDeviceInput: AVCaptureDeviceInput!
-    
-    // Non private properties for subclass usage
-    let session: AVCaptureSession = .init()
-    let sessionQueue: DispatchQueue = .init(label: "spider.ru.camera")
     
     // MARK: - Private properties
     private var isSessionRunning = false
@@ -144,32 +147,17 @@ class BaseCameraManager: NSObject {
     private var _portraitEffectsMatteDeliveryModeEnable: Bool = true
     
     // MARK: - init
-    init(configurator: (BaseCameraManager) -> Void) {
+    init(configurator: (CameraManager) -> Void) {
         super.init()
         configurator(self)
-        
-        sessionQueue.async {
-            self.configureSession()
-            self.addObservers()
-            self.startSession()
-        }
     }
     
     // MARK: - deinit
     deinit {
-        sessionQueue.async {
-            self.stopSession()
-        }
-        
-        NotificationCenter.default.removeObserver(self)
-        keyValueObservations.forEach { $0.invalidate() }
-        keyValueObservations.removeAll()
+        print("DEINIT \(self)")
     }
     
     // MARK: - Public methods
-    
-    /// Depending on authorizationStatus
-    /// call requestAccess(:_) method (usually for .notDetermined)
     func requestAuthorizationStatus(completion: ((AVAuthorizationStatus) -> Void)?) {
         let status = AVCaptureDevice.authorizationStatus(for: .video)
         
@@ -177,11 +165,19 @@ class BaseCameraManager: NSObject {
         case .authorized:
             setupResult = .success
             
+            sessionQueue.async {
+                self.configureSession()
+            }
+            
         case .notDetermined:
             sessionQueue.suspend()
-            AVCaptureDevice.requestAccess(for: .video, completionHandler: { granted in
-                self.setupResult = granted ? .success : .notAuthorized
-                self.sessionQueue.resume()
+            AVCaptureDevice.requestAccess(for: .video, completionHandler: { [weak self] granted in
+                self?.setupResult = granted ? .success : .notAuthorized
+                self?.sessionQueue.resume()
+                
+                if granted {
+                    self?.configureSession()
+                }
             })
             
         default:
@@ -189,6 +185,28 @@ class BaseCameraManager: NSObject {
         }
         
         completion?(status)
+    }
+    
+    func startSession() {
+        guard setupResult.isSuccess else { return }
+        
+        sessionQueue.async {
+            self.addObservers()
+            
+            self.session.startRunning()
+            self.isSessionRunning = self.session.isRunning
+        }
+    }
+    
+    func stopSession() {
+        sessionQueue.async {
+            NotificationCenter.default.removeObserver(self)
+            self.keyValueObservations.forEach { $0.invalidate() }
+            self.keyValueObservations.removeAll()
+            
+            self.session.stopRunning()
+            self.isSessionRunning = self.session.isRunning
+        }
     }
     
     func resumeInterruptedSession() {
@@ -285,11 +303,11 @@ class BaseCameraManager: NSObject {
             
             let availableVideoCodecTypes = movieFileOutput.availableVideoCodecTypes
             
-            if availableVideoCodecTypes.contains(.hevc) {
-                movieFileOutput.setOutputSettings([AVVideoCodecKey: AVVideoCodecType.hevc], for: movieFileOutputConnection!)
+            if availableVideoCodecTypes.contains(self.videoCodec) {
+                movieFileOutput.setOutputSettings([AVVideoCodecKey: self.videoCodec], for: movieFileOutputConnection!)
             }
             
-            movieFileOutput.startRecording(to: .generateVideoURl, recordingDelegate: recordingCaptureProcessor)
+            movieFileOutput.startRecording(to: .generateFileURL(type: self.videoFileFormat), recordingDelegate: recordingCaptureProcessor)
         }
     }
     
@@ -317,10 +335,11 @@ class BaseCameraManager: NSObject {
             }
             var photoSettings = AVCapturePhotoSettings()
             
-            // Capture HEIF photos when supported. Enable auto-flash and high-resolution photos.
-            if  self.photoOutput.availablePhotoCodecTypes.contains(.hevc) {
-                photoSettings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.hevc])
+            if  self.photoOutput.availablePhotoCodecTypes.contains(self.photoCodec) {
+                photoSettings = AVCapturePhotoSettings(format: [AVVideoCodecKey: self.photoCodec])
             }
+            
+            photoSettings.livePhotoVideoCodecType = self.livePhotoCodec
             
             if self.isFlashAvailable {
                 photoSettings.flashMode = self.flashMode
@@ -332,7 +351,7 @@ class BaseCameraManager: NSObject {
             }
             // Live Photo capture is not supported in movie mode.
             if self.livePhotoModeEnable && self.photoOutput.isLivePhotoCaptureSupported {
-                photoSettings.livePhotoMovieFileURL = .generateVideoURl
+                photoSettings.livePhotoMovieFileURL = .generateFileURL(type: self.livePhotoFileFormat)
             }
             
             photoSettings.isDepthDataDeliveryEnabled = self.depthDataDeliveryModeEnable
@@ -453,21 +472,7 @@ class BaseCameraManager: NSObject {
 }
 
 // MARK: - Private -
-private extension BaseCameraManager {
-    
-    func startSession() {
-        guard setupResult.isSuccess else { return }
-        session.startRunning()
-        isSessionRunning = session.isRunning
-    }
-    
-    func stopSession() {
-        guard setupResult.isSuccess else { return }
-        session.stopRunning()
-        isSessionRunning = session.isRunning
-    }
-    
-    // MARK: - Configure
+private extension CameraManager {
     
     func configureSession() {
         guard setupResult.isSuccess else { return }
@@ -494,7 +499,7 @@ private extension BaseCameraManager {
             
             guard let videoDevice = defaultVideoDevice else {
                 print("BaseCameraManager warning: Default video device is unavailable.")
-                setupResult = .configurationFailed(.unavailable)
+                setupResult = .configurationFailed
                 session.commitConfiguration()
                 return
             }
@@ -526,14 +531,14 @@ private extension BaseCameraManager {
                 }
             } else {
                 print("BaseCameraManager warning: Couldn't add video device input to the session.")
-                setupResult = .configurationFailed(.videoInput)
+                setupResult = .configurationFailed
                 session.commitConfiguration()
                 return
             }
             
         } catch {
             print("BaseCameraManager warning: Couldn't create video device input: \(error)")
-            setupResult = .configurationFailed(.videoInput)
+            setupResult = .configurationFailed
             session.commitConfiguration()
             return
         }
@@ -571,7 +576,7 @@ private extension BaseCameraManager {
             
         } else {
             print("BaseCameraManager warning: Could not add photo output to the session")
-            setupResult = .configurationFailed(.videoInput)
+            setupResult = .configurationFailed
             session.commitConfiguration()
             return
         }
@@ -588,9 +593,9 @@ private extension BaseCameraManager {
             }
         }
         
-        let systemPressureStateObservation = observe(\.videoDeviceInput.device.systemPressureState, options: .new) { _, change in
+        let systemPressureStateObservation = observe(\.videoDeviceInput.device.systemPressureState, options: .new) { [weak self] _, change in
             guard let systemPressureState = change.newValue else { return }
-            self.setRecommendedFrameRateRangeForPressureState(systemPressureState: systemPressureState)
+            self?.setRecommendedFrameRateRangeForPressureState(systemPressureState: systemPressureState)
         }
         
         keyValueObservations.append(isRunningKVO)

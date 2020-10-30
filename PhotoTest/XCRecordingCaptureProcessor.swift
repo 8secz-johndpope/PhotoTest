@@ -201,7 +201,7 @@ private extension String {
         case .hd1920x1080:   self = AVAssetExportPreset1920x1080
         case .hd4K3840x2160: self = AVAssetExportPreset3840x2160
         case .high:          self = AVAssetExportPresetHighestQuality
-        case .low:              self = AVAssetExportPresetLowQuality
+        case .low:           self = AVAssetExportPresetLowQuality
         case .medium:        self = AVAssetExportPresetMediumQuality
         case .vga640x480:    self = AVAssetExportPreset640x480
         case .iFrame960x540: self = AVAssetExportPreset960x540

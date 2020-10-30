@@ -34,7 +34,15 @@ open class ImagePicker: NSObject {
             return nil
         }
 
+        
         pickerController.sourceType = type
+        pickerController.modalPresentationStyle = .overFullScreen
+        
+        pickerController.navigationBar.standardAppearance = barApp
+        
+//        pickerController.navigationBar.barTintColor = .red
+//        pickerController.navigationBar.isTranslucent = false
+//        pickerController.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.red]
         
         switch type {
         case .photoLibrary, .savedPhotosAlbum:
@@ -93,5 +101,17 @@ extension ImagePicker: UIImagePickerControllerDelegate {
 }
 
 extension ImagePicker: UINavigationControllerDelegate {
+    
+    public func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        navigationController.navigationBar.barTintColor = .red
+        navigationController.navigationBar.isTranslucent = false
+        navigationController.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.red]
+    }
+    
+}
 
+class ImPicker: UIImagePickerController {
+    
+    
+    
 }

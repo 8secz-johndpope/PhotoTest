@@ -27,8 +27,8 @@ class ViewController: UIViewController {
     }
     
     @IBAction func choseFromGalery(_ sender: Any) {
-        let vc = GalleryViewController()
-        navigationController?.pushViewController(vc, animated: true)
+//        let vc = GalleryViewController()
+        navigationController?.present(imagePicker.pickerController(for: .photoLibrary, mode: .photo)!, animated: true)
     }
     
     @IBAction func takePhoto(_ sender: Any) {
